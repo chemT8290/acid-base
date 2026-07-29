@@ -14,6 +14,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- jsPDF for PDF Saving -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- MathJax 3 for TeX Formula Rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     
@@ -48,6 +62,80 @@
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* MathJax Responsive & Strict Inline Formatting */
+        .math-display,
+        .MathJax {
+            max-width: 100%;
+        }
+
+        mjx-container[display="true"] {
+            display: block !important;
+            max-width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 4px 0;
+            margin: 8px 0 !important;
+        }
+
+        mjx-container:not([display="true"]) {
+            display: inline-block !important;
+            width: auto !important;
+            max-width: none !important;
+            margin: 0 0.06em !important;
+            padding: 0 !important;
+            vertical-align: -0.12em;
+            white-space: nowrap !important;
+        }
+
+        .math-text-flow {
+            display: block;
+            width: 100%;
+            white-space: normal;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            line-height: 1.65;
+        }
+
+        .math-text-flow .math-inline,
+        .math-text-flow .inline-term {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .math-text-flow strong,
+        .math-text-flow em,
+        .math-text-flow .colored-term {
+            display: inline;
+        }
+
+        .inline-term {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        /* Quiz Choice Layout */
+        .quiz-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.45rem;
+            width: 100%;
+            cursor: pointer;
+            line-height: 1.6;
+        }
+
+        .quiz-option-radio {
+            flex: 0 0 auto;
+            margin-top: 0.32em;
+        }
+
+        .quiz-option-content {
+            display: inline;
+            min-width: 0;
+            white-space: normal;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+        }
 
         /* Virtual Lab 1 Styles */
         .lab-container { position: relative; width: 320px; height: 500px; margin: 0 auto; user-select: none; touch-action: none; }
@@ -261,9 +349,9 @@
         <div class="grid md:grid-cols-2 gap-4">
             <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                 <h3 class="font-bold text-brand-navy mb-2 flex items-center gap-2">1. 중화 반응과 적정의 원리</h3>
-                <p class="text-sm text-slate-600 mb-2">산의 <span class="font-bold text-red-500">수소 이온(H⁺)</span>과 염기의 <span class="font-bold text-blue-500">수산화 이온(OH⁻)</span>이 만나 물(H₂O)을 생성하는 반응입니다.</p>
-                <div class="bg-slate-50 p-2 rounded text-center text-sm font-mono mt-2 mb-2 font-bold text-slate-700 border border-slate-100">H⁺(aq) + OH⁻(aq) → H₂O(l)</div>
-                <p class="text-sm text-slate-600"><strong>중화 적정:</strong> 농도를 아는 표준 용액을 이용해 미지 용액의 농도를 알아내는 실험입니다. H⁺와 OH⁻가 남김없이 1:1로 반응하는 이론적 지점을 <strong>당량점</strong>이라 합니다.</p>
+                <p class="math-text-flow text-sm text-slate-600 mb-2">산의 <span class="inline-term text-red-500 font-bold">수소 이온(\(\text{H}^+\))</span>과 염기의 <span class="inline-term text-blue-500 font-bold">수산화 이온(\(\text{OH}^-\))</span>이 만나 <span class="inline-term">물(\(\text{H}_2\text{O}\))</span>을 생성하는 반응입니다.</p>
+                <div class="bg-slate-50 p-2 rounded text-center text-sm font-mono mt-2 mb-2 font-bold text-slate-700 border border-slate-100">\(\text{H}^+(aq) + \text{OH}^-(aq) \rightarrow \text{H}_2\text{O}(l)\)</div>
+                <p class="math-text-flow text-sm text-slate-600"><strong>중화 적정:</strong> 농도를 아는 표준 용액을 이용해 미지 용액의 농도를 알아내는 실험입니다. <span class="inline-term">\(\text{H}^+\)</span>와 <span class="inline-term">\(\text{OH}^-\)</span>가 남김없이 1:1로 반응하는 이론적 지점을 <strong>당량점</strong>이라 합니다.</p>
             </div>
             
             <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
@@ -294,6 +382,7 @@
             </div>
         </div>
 
+        <!-- Virtual Lab 1 -->
         <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
             <div class="bg-slate-100 p-4 border-b border-slate-200 flex justify-between items-center">
                 <h2 class="font-bold text-lg text-brand-navy">가상실험 1: 지시약 중화 적정</h2>
@@ -402,6 +491,7 @@
             </div>
         </div>
 
+        <!-- Virtual Lab 2 -->
         <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
             <div class="bg-slate-100 p-4 border-b border-slate-200 flex justify-between items-center">
                 <h2 class="font-bold text-lg text-brand-navy">가상실험 2: pH 센서 & 방울계수기를 이용한 중화 적정</h2>
@@ -475,58 +565,58 @@
             <h2 class="font-bold text-2xl mb-6 text-brand-amber">1차시 핵심 개념 확인 퀴즈 (10문항)</h2>
             <div class="space-y-4 text-slate-800">
                 <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
-                    <p class="font-bold text-brand-navy mb-3">Q1. [O/X] 강산과 강염기의 중화 적정에서는 항상 당량점의 pH가 7이다.</p>
+                    <p class="font-bold text-brand-navy mb-3">Q1. [O/X] 모든 산과 염기의 중화 적정에서 당량점의 pH는 항상 7이다.</p>
                     <div class="space-x-4 text-sm"><label class="cursor-pointer hover:text-brand-teal"><input type="radio" name="q1" value="O" class="accent-brand-teal"> O</label> <label class="cursor-pointer hover:text-brand-teal"><input type="radio" name="q1" value="X" class="accent-brand-teal"> X</label></div>
-                    <div id="q1-feedback" class="text-sm mt-3 hidden bg-slate-50 p-2 rounded border"></div>
+                    <div id="q1-feedback" class="quiz-feedback text-sm mt-3 hidden bg-slate-50 p-3 rounded border border-slate-200"></div>
                 </div>
                 <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
                     <p class="font-bold text-brand-navy mb-3">Q2. [O/X] 약산(식초)을 강염기(NaOH)로 적정할 때, 당량점의 pH는 생성된 염의 가수분해로 인해 7보다 크다.</p>
                     <div class="space-x-4 text-sm"><label class="cursor-pointer hover:text-brand-teal"><input type="radio" name="q2" value="O" class="accent-brand-teal"> O</label> <label class="cursor-pointer hover:text-brand-teal"><input type="radio" name="q2" value="X" class="accent-brand-teal"> X</label></div>
-                    <div id="q2-feedback" class="text-sm mt-3 hidden bg-slate-50 p-2 rounded border"></div>
+                    <div id="q2-feedback" class="quiz-feedback text-sm mt-3 hidden bg-slate-50 p-3 rounded border border-slate-200"></div>
                 </div>
                 <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
-                    <p class="font-bold text-brand-navy mb-3">Q3. [객관식] 중화 반응에서 실제로 물을 생성하는 알짜 이온 반응식은?</p>
+                    <p class="font-bold text-brand-navy mb-3">Q3. [객관식] 산과 염기의 중화 반응을 일반적으로 나타낸 알짜 이온 반응식은?</p>
                     <div class="space-y-2 text-sm ml-2">
-                        <label class="block cursor-pointer hover:text-brand-teal"><input type="radio" name="q3" value="1" class="accent-brand-teal"> 1) Na⁺ + Cl⁻ → NaCl</label>
-                        <label class="block cursor-pointer hover:text-brand-teal"><input type="radio" name="q3" value="2" class="accent-brand-teal"> 2) CH₃COOH + OH⁻ → CH₃COO⁻ + H₂O</label>
-                        <label class="block cursor-pointer hover:text-brand-teal"><input type="radio" name="q3" value="3" class="accent-brand-teal"> 3) H⁺ + OH⁻ → H₂O</label>
-                        <label class="block cursor-pointer hover:text-brand-teal"><input type="radio" name="q3" value="4" class="accent-brand-teal"> 4) H₂O + H₂O ⇌ H₃O⁺ + OH⁻</label>
-                        <label class="block cursor-pointer hover:text-brand-teal"><input type="radio" name="q3" value="5" class="accent-brand-teal"> 5) 2H₂ + O₂ → 2H₂O</label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="1" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">\(\text{Na}^+ + \text{Cl}^- \rightarrow \text{NaCl}\)</span></label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="2" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">\(\text{CH}_3\text{COOH} + \text{OH}^- \rightarrow \text{CH}_3\text{COO}^- + \text{H}_2\text{O}\)</span></label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="3" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">\(\text{H}^+ + \text{OH}^- \rightarrow \text{H}_2\text{O}\)</span></label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="4" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">\(\text{H}_2\text{O} + \text{H}_2\text{O} \rightleftharpoons \text{H}_3\text{O}^+ + \text{OH}^-\)</span></label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="5" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">\(2\text{H}_2 + \text{O}_2 \rightarrow 2\text{H}_2\text{O}\)</span></label>
                     </div>
-                    <div id="q3-feedback" class="text-sm mt-3 hidden bg-slate-50 p-2 rounded border"></div>
+                    <div id="q3-feedback" class="quiz-feedback text-sm mt-3 hidden bg-slate-50 p-3 rounded border border-slate-200"></div>
                 </div>
                 <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
                     <p class="font-bold text-brand-navy mb-3">Q4. [객관식] 이론적으로 남김없이 반응한 지점(A)과 지시약 변색으로 실험을 멈춘 지점(B)의 명칭은?</p>
                     <div class="space-y-2 text-sm ml-2">
-                        <label class="block cursor-pointer"><input type="radio" name="q4" value="1" class="accent-brand-teal"> 1) A: 종말점, B: 당량점</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q4" value="2" class="accent-brand-teal"> 2) A: 당량점, B: 종말점</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q4" value="3" class="accent-brand-teal"> 3) A: 중화점, B: 평형점</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q4" value="4" class="accent-brand-teal"> 4) A: 평형점, B: 종말점</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q4" value="5" class="accent-brand-teal"> 5) A: 임계점, B: 당량점</label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="1" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">A: 종말점, B: 당량점</span></label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="2" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">A: 당량점, B: 종말점</span></label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="3" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">A: 중화점, B: 평형점</span></label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="4" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">A: 평형점, B: 종말점</span></label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="5" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">A: 임계점, B: 당량점</span></label>
                     </div>
-                    <div id="q4-feedback" class="text-sm mt-3 hidden bg-slate-50 p-2 rounded border"></div>
+                    <div id="q4-feedback" class="quiz-feedback text-sm mt-3 hidden bg-slate-50 p-3 rounded border border-slate-200"></div>
                 </div>
                 <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
                     <p class="font-bold text-brand-navy mb-3">Q5. [객관식] 식초(약산)-NaOH(강염기) 적정 시 페놀프탈레인을 지시약으로 쓰는 이유는?</p>
                     <div class="space-y-2 text-sm ml-2">
-                        <label class="block cursor-pointer"><input type="radio" name="q5" value="1" class="accent-brand-teal"> 1) 당량점 pH가 염기성이며, 페놀프탈레인의 변색범위(8.2~10.0)와 겹치기 때문</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q5" value="2" class="accent-brand-teal"> 2) 당량점 pH가 정확히 7이기 때문</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q5" value="3" class="accent-brand-teal"> 3) 산성에서 붉은색을 띠어 관찰이 쉽기 때문</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q5" value="4" class="accent-brand-teal"> 4) 식초 특유의 냄새를 중화시켜 주기 때문</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q5" value="5" class="accent-brand-teal"> 5) 모든 적정에 쓸 수 있는 만능 지시약이기 때문</label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="1" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">당량점 부근의 급격한 pH 변화 구간에 페놀프탈레인의 변색 범위가 포함되기 때문</span></label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="2" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">당량점 pH가 정확히 7이기 때문</span></label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="3" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">산성에서 붉은색을 띠어 관찰이 쉽기 때문</span></label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="4" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">식초 특유의 냄새를 중화시켜 주기 때문</span></label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="5" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">모든 적정에 쓸 수 있는 만능 지시약이기 때문</span></label>
                     </div>
-                    <div id="q5-feedback" class="text-sm mt-3 hidden bg-slate-50 p-2 rounded border"></div>
+                    <div id="q5-feedback" class="quiz-feedback text-sm mt-3 hidden bg-slate-50 p-3 rounded border border-slate-200"></div>
                 </div>
                 <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
                     <p class="font-bold text-brand-navy mb-3">Q6. [객관식] 방울계수기의 역할은?</p>
                     <div class="space-y-2 text-sm ml-2">
-                        <label class="block cursor-pointer"><input type="radio" name="q6" value="1" class="accent-brand-teal"> 1) 용액의 pH를 측정한다.</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q6" value="2" class="accent-brand-teal"> 2) 광센서로 방울을 세어 자동 누적 부피 계산을 돕는다.</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q6" value="3" class="accent-brand-teal"> 3) 용액을 일정한 속도로 섞어준다.</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q6" value="4" class="accent-brand-teal"> 4) 용액의 온도를 측정한다.</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q6" value="5" class="accent-brand-teal"> 5) 이산화탄소가 녹아드는 것을 방지한다.</label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="1" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">용액의 pH를 측정한다.</span></label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="2" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">광센서로 방울을 세어 자동 누적 부피 계산을 돕는다.</span></label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="3" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">용액을 일정한 속도로 섞어준다.</span></label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="4" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">용액의 온도를 측정한다.</span></label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="5" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">이산화탄소가 녹아드는 것을 방지한다.</span></label>
                     </div>
-                    <div id="q6-feedback" class="text-sm mt-3 hidden bg-slate-50 p-2 rounded border"></div>
+                    <div id="q6-feedback" class="quiz-feedback text-sm mt-3 hidden bg-slate-50 p-3 rounded border border-slate-200"></div>
                 </div>
                 <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
                     <p class="font-bold text-brand-navy mb-3">Q7. [연결형] 다음 물질들이 적정 실험에서 위치해야 할 알맞은 곳을 고르세요.</p>
@@ -535,40 +625,40 @@
                         <div class="flex items-center gap-2"><span>(나) 비커에 넣는 미지 용액:</span> <select id="q7-b" class="border border-slate-300 p-1 rounded focus:ring-1 focus:ring-brand-teal"><option value="">선택</option><option value="NaOH">NaOH 표준용액</option><option value="식초">식초 시료</option><option value="지시약">페놀프탈레인</option></select></div>
                         <div class="flex items-center gap-2"><span>(다) 종말점을 알려주는 물질:</span> <select id="q7-c" class="border border-slate-300 p-1 rounded focus:ring-1 focus:ring-brand-teal"><option value="">선택</option><option value="NaOH">NaOH 표준용액</option><option value="식초">식초 시료</option><option value="지시약">페놀프탈레인</option></select></div>
                     </div>
-                    <div id="q7-feedback" class="text-sm mt-3 hidden bg-slate-50 p-2 rounded border"></div>
+                    <div id="q7-feedback" class="quiz-feedback text-sm mt-3 hidden bg-slate-50 p-3 rounded border border-slate-200"></div>
                 </div>
                 <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
                     <p class="font-bold text-brand-navy mb-3">Q8. [객관식] 센서를 이용한 적정 곡선 데이터를 분석할 때, 당량점을 가장 수학적으로 정확하게 찾을 수 있는 지점은?</p>
                     <div class="space-y-2 text-sm ml-2">
-                        <label class="block cursor-pointer"><input type="radio" name="q8" value="1" class="accent-brand-teal"> 1) 곡선의 시작점과 끝점의 정중앙</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q8" value="2" class="accent-brand-teal"> 2) pH가 정확히 7.0이 되는 지점</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q8" value="3" class="accent-brand-teal"> 3) 부피에 따른 pH 변화율(1차 미분, ΔpH/ΔV)이 최대가 되는 지점</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q8" value="4" class="accent-brand-teal"> 4) pH 변화가 가장 완만해지는 완충 구간의 중심</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q8" value="5" class="accent-brand-teal"> 5) 페놀프탈레인이 투명해지는 순간</label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="1" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">곡선의 시작점과 끝점의 정중앙</span></label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="2" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">pH가 정확히 7.0이 되는 지점</span></label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="3" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">부피에 따른 pH 변화율(1차 미분, \(\Delta\text{pH}/\Delta V\))이 최대가 되는 지점</span></label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="4" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">pH 변화가 가장 완만해지는 완충 구간의 중심</span></label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="5" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">페놀프탈레인이 투명해지는 순간</span></label>
                     </div>
-                    <div id="q8-feedback" class="text-sm mt-3 hidden bg-slate-50 p-2 rounded border"></div>
+                    <div id="q8-feedback" class="quiz-feedback text-sm mt-3 hidden bg-slate-50 p-3 rounded border border-slate-200"></div>
                 </div>
                 <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
-                    <p class="font-bold text-brand-navy mb-3">Q9. [객관식] 0.1M NaOH 10mL로 미지의 식초(1가 산) 10mL를 정확히 중화시켰습니다. 식초의 농도는?</p>
+                    <p class="font-bold text-brand-navy mb-3">Q9. [객관식] 0.1 M NaOH 10 mL로 미지의 식초(1가 산) 10 mL를 정확히 중화시켰습니다. 식초의 농도는?</p>
                     <div class="space-y-2 text-sm ml-2">
-                        <label class="block cursor-pointer"><input type="radio" name="q9" value="1" class="accent-brand-teal"> 1) 0.05 M</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q9" value="2" class="accent-brand-teal"> 2) 0.1 M</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q9" value="3" class="accent-brand-teal"> 3) 0.2 M</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q9" value="4" class="accent-brand-teal"> 4) 1.0 M</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q9" value="5" class="accent-brand-teal"> 5) 계산 불가</label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="1" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">0.05 M</span></label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="2" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">0.10 M</span></label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="3" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">0.20 M</span></label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="4" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">1.00 M</span></label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="5" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">계산 불가</span></label>
                     </div>
-                    <div id="q9-feedback" class="text-sm mt-3 hidden bg-slate-50 p-2 rounded border"></div>
+                    <div id="q9-feedback" class="quiz-feedback text-sm mt-3 hidden bg-slate-50 p-3 rounded border border-slate-200"></div>
                 </div>
                 <div class="bg-white p-5 rounded-lg shadow-sm border border-slate-200">
                     <p class="font-bold text-brand-navy mb-3">Q10. [객관식] 종말점을 지나쳐 과량 적정했을 때 계산된 식초의 농도는 실제 농도와 비교하여 어떠한가?</p>
                     <div class="space-y-2 text-sm ml-2">
-                        <label class="block cursor-pointer"><input type="radio" name="q10" value="1" class="accent-brand-teal"> 1) 소모된 염기 부피가 크게 측정되어 계산된 농도가 실제보다 높다.</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q10" value="2" class="accent-brand-teal"> 2) 실제 농도와 동일하게 유지된다.</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q10" value="3" class="accent-brand-teal"> 3) 소모된 염기 부피가 작게 측정되어 계산된 농도가 실제보다 낮다.</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q10" value="4" class="accent-brand-teal"> 4) 무작위로 변한다.</label>
-                        <label class="block cursor-pointer"><input type="radio" name="q10" value="5" class="accent-brand-teal"> 5) 판단할 수 없다.</label>
+                        <label class="quiz-option"><input type="radio" name="q10" value="1" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">소모된 염기 부피가 크게 측정되어 계산된 농도가 실제보다 높다.</span></label>
+                        <label class="quiz-option"><input type="radio" name="q10" value="2" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">실제 농도와 동일하게 유지된다.</span></label>
+                        <label class="quiz-option"><input type="radio" name="q10" value="3" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">소모된 염기 부피가 작게 측정되어 계산된 농도가 실제보다 낮다.</span></label>
+                        <label class="quiz-option"><input type="radio" name="q10" value="4" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">무작위로 변한다.</span></label>
+                        <label class="quiz-option"><input type="radio" name="q10" value="5" class="quiz-option-radio accent-brand-teal"><span class="quiz-option-content">판단할 수 없다.</span></label>
                     </div>
-                    <div id="q10-feedback" class="text-sm mt-3 hidden bg-slate-50 p-2 rounded border"></div>
+                    <div id="q10-feedback" class="quiz-feedback text-sm mt-3 hidden bg-slate-50 p-3 rounded border border-slate-200"></div>
                 </div>
             </div>
             
@@ -627,7 +717,6 @@
                     </div>
                 </div>
 
-                <!-- Dual File Upload Status Display -->
                 <div class="bg-slate-50 p-2.5 rounded border border-slate-200 mb-2 text-xs space-y-1">
                     <div class="flex justify-between items-center">
                         <span class="font-bold text-slate-700">MBL 파일 인식 상태:</span>
@@ -707,7 +796,7 @@
                 <div id="analysis-content" class="opacity-50 pointer-events-none transition-opacity duration-300 space-y-4">
                     
                     <div class="bg-fuchsia-50 p-4 rounded-xl border border-fuchsia-200 shadow-sm">
-                        <h3 class="font-bold text-fuchsia-800 text-sm mb-2">시스템 자동 계산 참고값 (ΔpH/ΔV 1차 미분)</h3>
+                        <h3 class="font-bold text-fuchsia-800 text-sm mb-2 math-text-flow">시스템 자동 계산 참고값 <span class="inline-term">(\(\Delta\text{pH}/\Delta V\) 1차 미분)</span></h3>
                         <div class="h-[120px] mb-3 bg-white rounded border border-fuchsia-100 p-1"><canvas id="a-derivative-chart"></canvas></div>
                         <table class="w-full text-sm text-center bg-white border border-fuchsia-200 border-collapse">
                             <thead class="bg-fuchsia-100 text-fuchsia-800 text-xs"><tr><th class="p-2 border">항목</th><th class="p-2 border">내 초안</th><th class="p-2 border">시스템 참고값</th><th class="p-2 border">차이 (오차율)</th></tr></thead>
@@ -783,7 +872,6 @@
     <section id="step-4" class="step-content hidden max-w-4xl mx-auto space-y-6">
         
         <div class="bg-white p-8 md:p-12 border border-slate-200 rounded-xl shadow-sm print:border-none print:shadow-none print:p-0 print:m-0" id="report-container">
-            <!-- Header Section (Section 1 for PDF) -->
             <div class="pdf-section mb-8">
                 <h1 class="text-3xl font-serif-title font-bold text-brand-navy text-center mb-8 border-b-2 border-brand-navy pb-6 print:border-black print:text-black">식초 품질 검증 종합 보고서</h1>
                 
@@ -795,12 +883,11 @@
                 </div>
             </div>
 
-            <!-- Section 1: 적정 데이터 분석 결과 -->
             <div class="pdf-section mb-8 print-break-inside-avoid">
                 <h3 class="font-bold text-lg text-brand-navy border-l-4 border-brand-teal pl-2 mb-3">1. 적정 데이터 분석 결과</h3>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="border border-slate-200 p-2 rounded text-center"><div class="text-xs font-bold mb-1 text-slate-700">적정 곡선 (pH - 부피)</div><img id="rep-img-chart1" class="w-full max-h-[220px] object-contain"></div>
-                    <div class="border border-slate-200 p-2 rounded text-center"><div class="text-xs font-bold mb-1 text-slate-700">1차 미분 곡선 (ΔpH/ΔV)</div><img id="rep-img-chart2" class="w-full max-h-[220px] object-contain"></div>
+                    <div class="border border-slate-200 p-2 rounded text-center"><div class="text-xs font-bold mb-1 text-slate-700 math-text-flow">1차 미분 곡선 <span class="inline-term">(\(\Delta\text{pH}/\Delta V\))</span></div><img id="rep-img-chart2" class="w-full max-h-[220px] object-contain"></div>
                 </div>
                 <div class="mt-3 bg-blue-50 p-4 rounded text-sm print:bg-white print:border border-blue-100">
                     <div class="font-bold text-blue-800 mb-1">최종 결정 당량점: <span id="rep-eq-vol" class="text-brand-pink text-xl font-mono mx-1"></span> mL</div>
@@ -808,7 +895,6 @@
                 </div>
             </div>
 
-            <!-- Section 2: 농도 및 산도(%) 수기 계산 -->
             <div class="pdf-section mb-8 print-break-inside-avoid">
                 <h3 class="font-bold text-lg text-brand-navy border-l-4 border-brand-teal pl-2 mb-3">2. 농도 및 산도(%) 수기 계산</h3>
                 <div class="bg-slate-50 p-5 rounded text-sm space-y-4 border border-slate-200 print:bg-white">
@@ -820,7 +906,6 @@
                     <div class="flex items-center gap-3">5) 산도(%) = <input type="number" id="rep-input-percent" class="border-2 border-brand-pink p-2 w-28 text-center font-bold text-brand-pink text-lg bg-pink-50 rounded focus:ring-2 focus:ring-pink-400" oninput="updateQualityInspectionCard()"> %</div>
                 </div>
 
-                <!-- 자필 계산 과정 사진 업로드 영역 (화면 전용) -->
                 <div class="mt-4 border border-slate-200 rounded-lg p-4 bg-slate-50 text-sm no-print shadow-sm">
                     <div class="flex justify-between items-center mb-2">
                         <label class="font-bold text-slate-700 flex items-center gap-1.5 cursor-pointer">
@@ -838,14 +923,12 @@
                     </p>
                 </div>
 
-                <!-- 자필 계산 과정 사진 표시 (화면 및 PDF 인쇄 공통) -->
                 <div id="calc-img-preview-container" class="hidden mt-3 text-center pdf-question print-break-inside-avoid">
                     <p class="text-xs font-bold text-slate-600 mb-2 border-t border-slate-200 pt-3 text-left">첨부된 자필 계산 과정 사진</p>
                     <img id="calc-img-preview" class="max-w-full h-auto max-h-[450px] mx-auto rounded border border-slate-300 shadow-sm object-contain" alt="자필 계산 과정">
                 </div>
             </div>
 
-            <!-- Section 3: 외부 AI 대화 검증 기록 -->
             <div class="pdf-section mb-8 print-break-inside-avoid text-sm">
                 <h3 class="font-bold text-lg text-brand-navy border-l-4 border-brand-teal pl-2 mb-3">3. 외부 AI 대화 검증 기록</h3>
                 <div class="bg-slate-50 p-3 rounded border border-slate-200 print:bg-white mb-3">
@@ -861,7 +944,6 @@
                 </div>
             </div>
 
-            <!-- Section 4: 품질 판정 및 최종 결론 -->
             <div class="pdf-section mb-8 print-break-inside-avoid">
                 <h3 class="font-bold text-lg text-brand-navy border-l-4 border-brand-teal pl-2 mb-3">4. 품질 판정 및 최종 결론</h3>
                 
@@ -903,7 +985,6 @@
                 </div>
             </div>
             
-            <!-- Section 5: 활동 소감문 -->
             <div class="pdf-section mb-8 print-break-inside-avoid">
                 <h3 class="font-bold text-lg text-brand-navy border-l-4 border-brand-teal pl-2 mb-3">5. 활동 소감문</h3>
                 <textarea id="rep-reflection" rows="5" class="w-full p-3 text-sm border border-slate-300 rounded resize-y focus:ring-1 focus:ring-brand-teal shadow-inner print:shadow-none" placeholder="프로젝트를 수행하며 화학적으로 새롭게 알게 된 점, 어려웠던 점이나 해결 과정, 앞으로의 다짐 등을 자유롭게 서술하세요."></textarea>
@@ -1008,7 +1089,6 @@
     </div>
 </section>
 
-<!-- 학생 개별 평가 및 AI 분석 통합 모달 -->
 <div id="eval-modal" class="hidden fixed inset-0 z-[110] flex items-center justify-center modal-overlay p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col border border-slate-200 overflow-hidden">
         <div class="bg-brand-navy text-white p-4 flex justify-between items-center flex-shrink-0">
@@ -1157,6 +1237,30 @@
         if (txt) txt.innerText = msg; 
         const modal = document.getElementById('alert-modal');
         if (modal) modal.classList.remove('hidden'); 
+    }
+
+    function renderMathInElement(element) {
+        if (!element) return;
+
+        const tryRender = () => {
+            if (window.MathJax && typeof MathJax.typesetPromise === "function") {
+                if (typeof MathJax.typesetClear === "function") {
+                    MathJax.typesetClear([element]);
+                }
+
+                MathJax.typesetPromise([element]).catch(error => {
+                    console.error("수식 렌더링 오류:", error);
+                });
+
+                return true;
+            }
+
+            return false;
+        };
+
+        if (!tryRender()) {
+            setTimeout(tryRender, 300);
+        }
     }
     
     function saveState() { 
@@ -1310,19 +1414,29 @@
             else { prev.classList.remove('invisible'); next.classList.remove('hidden'); prt.classList.add('hidden'); }
         }
 
-        setTimeout(() => {
-            if(step === 2) {
-                initRealChart();
-                updateRealChart();
-                updateMblUploadStatusUI();
+        if(step === 2) {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    if (!rChart) {
+                        initRealChart();
+                    }
+                    updateRealChart();
+                    if (rChart) rChart.resize();
+                });
+            });
+            updateMblUploadStatusUI();
+        }
+        if(step === 3) {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    updateStep3Chart();
+                    if (step3Chart) step3Chart.resize();
+                });
+            });
+            if (appState.analysis.isLocked) {
+                runSystemAnalysis();
             }
-            if(step === 3) {
-                updateStep3Chart();
-                if (appState.analysis.isLocked) {
-                    runSystemAnalysis();
-                }
-            }
-        }, 100);
+        }
     }
 
     let vChart, vAnimationId, lastTime = 0, isDraggingStopcock = false;
@@ -1621,16 +1735,30 @@
     }
 
     const quizExplanations = [
-        "1. 산과 염기의 종류에 따라 당량점 pH가 다릅니다. 강산-강염기는 7이지만, 약산-강염기는 7보다 큽니다.",
-        "2. 약산(식초)과 강염기(NaOH)가 반응하면 생성된 염(CH3COONa)이 물과 가수분해하여 OH⁻를 내놓으므로, 당량점의 pH는 7보다 큰 염기성을 띱니다.",
-        "3. 중화 반응의 알짜 이온 반응식은 구경꾼 이온을 제외하고 실제 물을 생성하는 H⁺(aq) + OH⁻(aq) → H₂O(l) 입니다.",
-        "4. 화학량론적으로 남김없이 반응한 이론적 정답 지점은 '당량점', 눈으로 색 변화를 보고 적정을 멈추는 실험적 지점은 '종말점'입니다.",
-        "5. 식초-NaOH 적정은 당량점 pH가 8.7 부근으로 염기성이므로, 변색 범위가 염기성(8.2~10.0)인 페놀프탈레인이 적합합니다.",
-        "6. 방울계수기(Drop Counter)는 광센서로 뷰렛에서 떨어지는 방울을 세어 '방울 수 × 1방울 부피'로 자동 부피 계산을 돕습니다.",
-        "7. 뷰렛에는 농도를 아는 '표준 용액(NaOH)', 비커에는 농도를 모르는 '식초 시료', 종말점을 알려주는 것은 '지시약'입니다.",
-        "8. 센서로 측정한 데이터 분석 시, pH가 부피에 대해 가장 급격하게 변하는 지점(1차 미분, ΔpH/ΔV 값이 최대인 지점)이 당량점입니다.",
-        "9. 1가 산과 1가 염기가 1:1 몰비로 반응하며, 소비된 부피가 10mL로 동일하므로 농도 역시 NaOH와 동일한 0.1M입니다.",
-        "10. 종말점을 지나치면 실험자가 측정한 소모된 염기의 부피가 실제 당량점 부피보다 크게 측정되므로, 계산된 산의 농도도 실제보다 높게 나타납니다."
+        "산과 염기의 세기에 따라 당량점의 pH가 달라집니다. 25℃에서 강산-강염기 적정의 당량점은 pH 7이지만, 약산-강염기 적정은 7보다 크고 강산-약염기 적정은 7보다 작습니다.",
+        "약산(식초)과 강염기(NaOH)가 반응하면 생성된 염(\\(\\text{CH}_3\\text{COONa}\\))이 물과 가수분해하여 \\(\\text{OH}^-\\)" + "를 내놓으므로, 당량점의 pH는 7보다 큰 염기성을 띱니다.",
+        "산이 내놓은 수소 이온과 염기가 내놓은 수산화 이온이 반응하여 물을 생성하므로, 중화 반응을 일반적으로 나타낸 알짜 이온 반응식은 \\(\\text{H}^+(aq) + \\text{OH}^-(aq) \\rightarrow \\text{H}_2\\text{O}(l)\\)입니다.",
+        "화학량론적으로 남김없이 반응한 이론적 정답 지점은 당량점, 눈으로 색 변화를 보고 적정을 멈추는 실험적 지점은 종말점입니다.",
+        "식초의 아세트산을 NaOH로 적정하면 당량점은 염기성 영역에 형성됩니다. 페놀프탈레인의 변색 범위인 pH 8.2~10.0이 당량점 부근의 급격한 pH 변화 구간에 포함되므로 적절한 지시약입니다.",
+        "방울계수기(Drop Counter)는 광센서로 뷰렛에서 떨어지는 방울을 세어 '방울 수 × 1방울 부피'로 자동 부피 계산을 돕습니다.",
+        "뷰렛에는 농도를 아는 표준 용액(NaOH), 비커에는 농도를 모르는 식초 시료, 종말점을 알려주는 것은 지시약입니다.",
+        "부피에 따른 pH 변화율(\\(\\Delta \\text{pH}/\\Delta V\\))이 최대가 되는 지점을 이용해 당량점 부피를 추정할 수 있습니다.",
+        `산과 염기의 반응 몰비가 1:1이므로 다음 관계가 성립합니다.
+        <div class="my-2 text-center">
+            \\[ C_{\\mathrm{acid}}V_{\\mathrm{acid}} = C_{\\mathrm{base}}V_{\\mathrm{base}} \\]
+        </div>
+        <div class="my-2 text-center">
+            \\[ C_{\\mathrm{acid}}\\times 10.0 = 0.100\\times 10.0 \\]
+        </div>
+        <div class="my-2 text-center">
+            \\[ C_{\\mathrm{acid}} = 0.100\\ \\mathrm{mol\\,L^{-1}} \\]
+        </div>
+        따라서 계산 결과 식초 시료의 농도는 0.100 M입니다.`,
+        `식초의 농도는 다음 관계로 계산할 수 있습니다.
+        <div class="my-2 text-center">
+            \\[ C_{\\mathrm{acid}} = \\frac{C_{\\mathrm{base}}V_{\\mathrm{base}}}{V_{\\mathrm{acid}}} \\]
+        </div>
+        종말점을 지나쳐 과량 적정하면 기록된 NaOH 부피가 실제보다 커집니다. 따라서 계산된 식초 농도도 실제보다 높아집니다.`
     ];
 
     function checkQuiz() {
@@ -1646,15 +1774,108 @@
             if (fb) {
                 fb.classList.remove('hidden');
                 if(userAns) {
-                    if(userAns === answers[i-1]) { sc++; fb.innerHTML=`<div class="text-brand-teal font-bold">정답입니다!</div><div class="text-slate-600 mt-1 text-xs pl-2 border-l-2 border-brand-teal">${quizExplanations[i-1]}</div>`; }
-                    else fb.innerHTML=`<div class="text-red-500 font-bold">오답입니다.</div><div class="text-slate-600 mt-1 text-xs pl-2 border-l-2 border-red-400"><span class="font-bold">해설:</span> ${quizExplanations[i-1]}</div>`;
-                } else fb.innerHTML=`<div class="text-amber-500 font-bold text-xs">답을 입력하거나 선택하세요.</div>`;
+                    if(userAns === answers[i-1]) { 
+                        sc++; 
+                        fb.innerHTML=`<div class="text-brand-teal font-bold mb-1">정답입니다!</div><div class="text-slate-600 text-xs leading-relaxed border-l-2 border-brand-teal pl-2">${quizExplanations[i-1]}</div>`; 
+                    } else {
+                        fb.innerHTML=`<div class="text-red-500 font-bold mb-1">오답입니다.</div><div class="text-slate-600 text-xs leading-relaxed border-l-2 border-red-400 pl-2"><span class="font-bold">해설:</span> ${quizExplanations[i-1]}</div>`;
+                    }
+                } else {
+                    fb.innerHTML=`<div class="text-amber-500 font-bold text-xs">답을 입력하거나 선택하세요.</div>`;
+                }
+                renderMathInElement(fb);
             }
         }
         document.getElementById('quiz-result').innerText = `총 ${sc} / 10 문항 정답`;
     }
 
     let rChart, step3Chart, dChart;
+
+    function getRealTitrationChartData() {
+        const rows = Array.isArray(appState.realData?.rows) ? appState.realData.rows : [];
+        return rows
+            .map(row => {
+                const volume = Number(row.v ?? row.volume ?? row.vol);
+                const ph = Number(row.ph ?? row.pH ?? row.PH);
+                return { x: volume, y: ph };
+            })
+            .filter(point => Number.isFinite(point.x) && Number.isFinite(point.y))
+            .sort((a, b) => a.x - b.x);
+    }
+
+    function createTitrationChartConfig(chartData, labelName) {
+        return {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: labelName || '부피에 따른 pH',
+                    data: chartData,
+                    borderColor: '#14b8a6',
+                    backgroundColor: '#14b8a6',
+                    showLine: true,
+                    tension: 0.15,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                parsing: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: { display: true, text: 'NaOH 누적 부피 (mL)' }
+                    },
+                    y: {
+                        title: { display: true, text: 'pH' },
+                        suggestedMin: 0,
+                        suggestedMax: 14
+                    }
+                }
+            }
+        };
+    }
+
+    function initRealChart() {
+        const canvas = document.getElementById('r-chart');
+        if (!canvas) return;
+        if (rChart) {
+            rChart.destroy();
+            rChart = null;
+        }
+        const ctx = canvas.getContext('2d');
+        const chartData = getRealTitrationChartData();
+        rChart = new Chart(ctx, createTitrationChartConfig(chartData, '수집 데이터 (부피에 따른 pH)'));
+    }
+
+    function updateRealChart() {
+        const canvas = document.getElementById('r-chart');
+        if (!canvas) return;
+        const chartData = getRealTitrationChartData();
+        if (!rChart) {
+            initRealChart();
+        } else {
+            rChart.data.datasets[0].data = chartData;
+            rChart.update();
+        }
+        saveState();
+    }
+
+    function updateStep3Chart() {
+        const canvas = document.getElementById('step3-r-chart');
+        if (!canvas) return;
+        const chartData = getRealTitrationChartData();
+
+        if (!step3Chart) {
+            const ctx = canvas.getContext('2d');
+            step3Chart = new Chart(ctx, createTitrationChartConfig(chartData, '나의 실험 데이터 (부피에 따른 pH)'));
+        } else {
+            step3Chart.data.datasets[0].data = chartData;
+            step3Chart.update();
+        }
+    }
 
     function normalizeHeaderString(h) {
         if (!h) return "";
@@ -2010,15 +2231,6 @@
         const lv = appState.realData.rows.length>0 ? appState.realData.rows[appState.realData.rows.length-1].v+1 : 0; 
         appState.realData.rows.push({v:lv, ph:7}); 
         renderDataTable(); 
-    }
-    
-    function updateRealChart() { 
-        if(rChart) { rChart.data.datasets[0].data = (appState.realData.rows || []).map(r=>({x:r.v,y:r.ph})); rChart.update(); }
-        saveState(); 
-    }
-
-    function updateStep3Chart() {
-        if(step3Chart) { step3Chart.data.datasets[0].data = (appState.realData.rows || []).map(r=>({x:r.v,y:r.ph})); step3Chart.update(); }
     }
 
     function confirmDraftAndUnlockAI() {
