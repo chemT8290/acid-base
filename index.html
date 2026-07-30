@@ -268,9 +268,9 @@
         <div class="flex items-center gap-4 text-sm">
             <div id="user-display" class="hidden items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-600">
                 <span class="text-brand-pink text-xs">요원:</span> <span id="display-nickname" class="font-bold"></span>
-                <button onclick="checkMyFeedback()" class="ml-2 bg-brand-pink hover:bg-pink-600 text-white px-2 py-0.5 rounded text-[10px] font-bold transition-colors">피드백 확인</button>
             </div>
             <div class="flex items-center gap-2">
+                <button onclick="checkMyFeedback()" class="px-2.5 py-1.5 bg-brand-pink hover:bg-pink-600 text-white rounded text-xs font-bold transition-colors shadow-sm" title="닉네임으로 교사 확정 피드백을 확인합니다.">📩 피드백 확인</button>
                 <div id="save-status" class="text-slate-400 text-xs hidden sm:block" title="현재 브라우저에 실시간 자동 저장됩니다. 다른 기기에서 이어서 하려면 내려받기/불러오기를 이용하세요.">자동 저장 대기 중...</div>
                 <button onclick="saveToFile()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded text-xs font-bold transition-colors flex items-center gap-1 shadow-sm" title="다른 기기나 브라우저에서 이어서 할 수 있도록 현재 진행상황을 JSON 파일로 저장합니다.">
                     <svg class="w-3.5 h-3.5 text-brand-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
@@ -1269,14 +1269,21 @@
     }
 
     async function cloudFetchAll() {
-        if (!cloudReady()) return null;
+        if (!cloudReady()) { console.warn('클라우드 목록 조회 건너뜀: CLOUD.URL이 설정되지 않음'); return null; }
         try {
             const url = `${CLOUD.URL}?action=list&key=${encodeURIComponent(CLOUD.KEY)}`;
             const res = await fetch(url);
-            const data = await res.json();
-            return (data && data.ok) ? data.rows : null;
+            const text = await res.text();
+            let data;
+            try { data = JSON.parse(text); } catch (parseErr) {
+                console.error('클라우드 목록 조회: JSON 파싱 실패. 서버 응답(HTTP ' + res.status + '):', text.slice(0, 500));
+                return null;
+            }
+            if (data && data.ok) return data.rows;
+            console.error('클라우드 목록 조회 실패 상세:', data);
+            return null;
         } catch (e) {
-            console.warn('클라우드 목록 조회 오류:', e);
+            console.error('클라우드 목록 조회 네트워크 오류:', e);
             return null;
         }
     }
@@ -2686,9 +2693,20 @@
         if (stamp) stamp.classList.add('active');
 
         // 클라우드(Sheets+Drive) 동기화: 텍스트 필드는 그대로, 파일은 base64로 전송해 Drive 업로드 후 링크만 저장
+        // 클라우드(Sheets+Drive) 동기화: 교사 전용 필드(피드백/세특/루브릭 등)는 절대 포함하지 않고
+        // 학생이 직접 입력한 필드만 전송합니다. 그래야 재제출/PDF 재다운로드 시 교사가 이미
+        // 확정해둔 피드백이 실수로 덮어써지는 일이 없습니다.
+        const studentOwnedFields = [
+            'date', 'class', 'nickname', 'password', 'quizScore', 'brand', 'labelAcidity',
+            'eqVol', 'draftEqReason', 'errorAnalysis', 'aiRevised', 'aiStatus', 'aiReason',
+            'molNaoh', 'molAcid', 'mDiluted', 'mOrig', 'expAcidity', 'conclusion', 'reflection'
+        ];
+        const cloudRow = {};
+        studentOwnedFields.forEach(f => { cloudRow[f] = sub[f]; });
+
         const calcImageBase64 = (appState.report && appState.report.calculationImage) || null;
         const rawFiles = (appState.realData && appState.realData.uploadedRawFiles) || [];
-        await cloudUpsertSubmission(sub, { calcImageBase64, rawFiles });
+        await cloudUpsertSubmission(cloudRow, { calcImageBase64, rawFiles });
     }
 
     async function downloadReportPdf() {
@@ -2845,12 +2863,18 @@
     }
 
     async function checkMyFeedback() {
-        if(!appState.student.nickname) return showAlert("임무 시작(닉네임 등록)을 먼저 진행해주세요.");
+        let nick = appState.student.nickname;
+        if (!nick) {
+            const input = window.prompt("피드백을 확인할 닉네임을 입력하세요:");
+            if (!input || !input.trim()) return;
+            nick = input.trim();
+        }
+
         if (cloudReady()) { try { await cloudPullIntoLocal(); } catch(e) {} }
         const subs = JSON.parse(localStorage.getItem('vinegarLabSubmissions') || '[]');
-        const mySub = [...subs].reverse().find(s => s.nickname === appState.student.nickname);
+        const mySub = [...subs].reverse().find(s => s.nickname === nick);
         
-        if(!mySub) return showAlert("제출된 탐구 보고서 기록을 찾을 수 없습니다.");
+        if(!mySub) return showAlert(`'${nick}' 닉네임으로 제출된 기록을 찾을 수 없습니다. 닉네임 철자가 정확한지 확인해주세요.`);
 
         if(mySub.teacherFinalFeedback && mySub.teacherFinalFeedback.status === 'finalized') {
             const fb = mySub.teacherFinalFeedback;
