@@ -832,6 +832,14 @@
                                 </form>
                             </div>
 
+                            <div>
+                                <label class="block text-xs font-bold mb-1">
+                                    (선택) 다른 AI와 나눈 대화 링크 첨부
+                                    <span class="font-normal text-slate-400">— 위 AI 튜터 대신/추가로 ChatGPT 등 다른 AI와 검증했다면 대화 공유 링크를 붙여넣으세요.</span>
+                                </label>
+                                <input type="url" id="ai-link" class="w-full p-2 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-brand-teal" placeholder="ChatGPT, Gemini 등 다른 AI와의 대화 공유 링크 (선택)">
+                            </div>
+
                             <div class="border border-slate-200 rounded p-3 bg-slate-50">
                                 <label class="block text-xs font-bold mb-2 text-brand-teal">AI 제안 판단표</label>
                                 <div class="overflow-x-auto">
@@ -941,6 +949,9 @@
                 <div class="bg-slate-50 p-3 rounded border border-slate-200 print:bg-white mb-3">
                     <strong class="block mb-2 text-brand-navy border-b pb-1">AI 튜터 대화 전문</strong>
                     <div id="rep-ai-conversation" class="space-y-2 text-xs max-h-[400px] overflow-y-auto print:max-h-none"></div>
+                </div>
+                <div id="rep-ai-link-wrapper" class="bg-slate-50 p-3 rounded border border-slate-200 print:bg-white mb-3">
+                    <span class="font-bold text-slate-700">다른 AI와의 대화 링크(선택):</span> <a id="rep-ai-link-display" href="#" target="_blank" class="text-blue-600 underline break-all ml-1 hover:text-blue-800"></a>
                 </div>
                 <div class="border border-slate-200 p-3 rounded bg-slate-50 print:bg-white mb-3">
                     <strong class="block mb-2 text-brand-navy border-b pb-1">AI 대화 후 수정 내용</strong>
@@ -2657,6 +2668,25 @@
                     renderMathInElement(convContainer);
                 }
             }
+
+            const aiLink = document.getElementById('ai-link');
+            const aiLinkWrapper = document.getElementById('rep-ai-link-wrapper');
+            const aiLinkDisplay = document.getElementById('rep-ai-link-display');
+            if (aiLink && aiLinkWrapper && aiLinkDisplay) {
+                let rawUrl = (aiLink.value || '').trim();
+                if (rawUrl) {
+                    if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
+                        rawUrl = 'https://' + rawUrl;
+                    }
+                    aiLinkDisplay.href = rawUrl;
+                    aiLinkDisplay.innerText = rawUrl;
+                    aiLinkDisplay.target = "_blank";
+                    aiLinkDisplay.rel = "noopener noreferrer";
+                    aiLinkWrapper.classList.remove('hidden');
+                } else {
+                    aiLinkWrapper.classList.add('hidden');
+                }
+            }
             
             const aiRev = document.getElementById('ai-revised-text');
             setTxt('rep-ai-revised', aiRev ? aiRev.value : '');
@@ -2788,6 +2818,7 @@
             aiStatus: getVal('rep-ai-status'),
             aiReason: getVal('ai-improve-reason'),
             aiConversationLog: JSON.stringify((appState.analysis && appState.analysis.aiConversation) || []),
+            aiExternalLink: getVal('ai-link'),
             molNaoh: getVal('rep-input-mol-naoh'),
             molAcid: getVal('rep-input-mol-acid'),
             mDiluted: getVal('rep-input-m-diluted'),
@@ -2836,7 +2867,7 @@
         const studentOwnedFields = [
             'date', 'class', 'nickname', 'password', 'quizScore', 'brand', 'labelAcidity',
             'eqVol', 'draftEqReason', 'errorAnalysis', 'aiRevised', 'aiStatus', 'aiReason',
-            'aiConversationLog', 'molNaoh', 'molAcid', 'mDiluted', 'mOrig', 'expAcidity', 'conclusion', 'reflection'
+            'aiConversationLog', 'aiExternalLink', 'molNaoh', 'molAcid', 'mDiluted', 'mOrig', 'expAcidity', 'conclusion', 'reflection'
         ];
         const cloudRow = {};
         studentOwnedFields.forEach(f => { cloudRow[f] = sub[f]; });
@@ -3431,6 +3462,7 @@
                         <strong class="text-brand-navy block mb-1">AI 교차 검증 기록</strong>
                         수정 후: ${s.aiRevised || '-'}<br>
                         개선 판단: ${s.aiStatus || '-'} (${s.aiReason || '-'})
+                        ${s.aiExternalLink ? `<br>다른 AI 대화 링크: <a href="${s.aiExternalLink}" target="_blank" class="text-blue-600 underline">${s.aiExternalLink}</a>` : ''}
                         <div class="mt-2 pt-2 border-t border-slate-200">
                             <strong class="text-brand-navy block mb-1 text-[11px]">AI 튜터 대화 전문</strong>
                             <div class="max-h-40 overflow-y-auto space-y-1 bg-white border border-slate-200 rounded p-2">${renderConversationLogHtml(s.aiConversationLog)}</div>
