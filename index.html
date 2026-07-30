@@ -916,9 +916,7 @@
                                 </label>
                                 <input type="url" id="ai-link" class="w-full p-2 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-brand-teal" placeholder="ChatGPT, Gemini 등 다른 AI와의 대화 공유 링크 (선택)">
                             </div>
-                        </div>
 
-                        <div class="space-y-4 min-w-0">
                             <div class="border border-slate-200 rounded p-3 bg-slate-50">
                                 <label class="block text-xs font-bold mb-2 text-brand-teal">AI 제안 판단표</label>
                                 <div class="overflow-x-auto">
@@ -941,16 +939,64 @@
                                 </div>
                                 <button onclick="addAiProposalRow()" class="text-xs bg-white border border-slate-300 px-3 py-1.5 rounded hover:bg-slate-100 font-bold transition-colors shadow-sm">+ 항목 추가</button>
                             </div>
+                        </div>
 
-                            <div class="border border-slate-200 rounded p-3 bg-slate-50 space-y-2">
-                                <label class="block text-xs font-bold text-brand-navy">AI와 대화 후 수정 내용</label>
-                                <div class="flex items-center gap-2 mb-2">
-                                    <input type="checkbox" id="ai-keep-draft" class="w-4 h-4 accent-brand-teal" onchange="toggleAiRevisionText(this)">
-                                    <label for="ai-keep-draft" class="text-xs text-slate-700 font-bold cursor-pointer">수정 없음 (초안 내용 그대로 유지)</label>
+                        <div class="space-y-4 min-w-0">
+                            <div class="border border-slate-200 rounded p-3 bg-slate-50 space-y-3">
+                                <label class="block text-xs font-bold text-brand-navy border-b border-slate-200 pb-2">AI 대화 후 수정 내용</label>
+
+                                <div class="bg-white border border-slate-200 rounded p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-bold text-brand-navy">1. 당량점 판단</span>
+                                        <label class="flex items-center gap-1 text-[11px] text-slate-600 cursor-pointer">
+                                            <input type="checkbox" id="rev-eq-keep" class="w-3.5 h-3.5 accent-brand-teal" onchange="toggleRevisionGroup('eq', this.checked)">
+                                            수정 없음 (초안 내용 그대로 유지)
+                                        </label>
+                                    </div>
+                                    <div id="rev-eq-fields" class="space-y-2">
+                                        <div>
+                                            <label class="block text-[11px] text-slate-500 mb-0.5">판단 부피 (mL)</label>
+                                            <input type="number" id="rev-eq-vol" step="0.01" class="w-full p-1.5 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-brand-teal">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] text-slate-500 mb-0.5">화학적 근거 서술 (수소 이온, 수산화 이온 등 키워드 포함)</label>
+                                            <textarea id="rev-eq-reason" rows="2" class="w-full p-1.5 text-xs border border-slate-300 rounded resize-y focus:ring-1 focus:ring-brand-teal"></textarea>
+                                        </div>
+                                    </div>
                                 </div>
-                                <textarea id="ai-revised-text" rows="3" class="w-full p-2 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-brand-teal" placeholder="AI 검증 후 변경한 내용(당량점, 농도, 오차원인 등)을 입력하세요."></textarea>
+
+                                <div class="bg-white border border-slate-200 rounded p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-bold text-brand-navy">2. 식초 농도 예측</span>
+                                        <label class="flex items-center gap-1 text-[11px] text-slate-600 cursor-pointer">
+                                            <input type="checkbox" id="rev-conc-keep" class="w-3.5 h-3.5 accent-brand-teal" onchange="toggleRevisionGroup('conc', this.checked)">
+                                            수정 없음 (초안 내용 그대로 유지)
+                                        </label>
+                                    </div>
+                                    <div id="rev-conc-fields" class="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <label class="block text-[11px] text-slate-500 mb-0.5">희석액 농도 (M)</label>
+                                            <input type="number" id="rev-conc-diluted" step="0.0001" class="w-full p-1.5 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-brand-teal">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] text-slate-500 mb-0.5">원액 농도 (M)</label>
+                                            <input type="number" id="rev-conc-original" step="0.01" class="w-full p-1.5 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-brand-teal">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white border border-slate-200 rounded p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-bold text-brand-navy">3. 오차 원인 분석</span>
+                                        <label class="flex items-center gap-1 text-[11px] text-slate-600 cursor-pointer">
+                                            <input type="checkbox" id="rev-error-keep" class="w-3.5 h-3.5 accent-brand-teal" onchange="toggleRevisionGroup('error', this.checked)">
+                                            수정 없음 (초안 내용 그대로 유지)
+                                        </label>
+                                    </div>
+                                    <textarea id="rev-error-text" rows="3" class="w-full p-1.5 text-xs border border-slate-300 rounded resize-y focus:ring-1 focus:ring-brand-teal"></textarea>
+                                </div>
                             </div>
-                            
+
                             <div class="border-t border-slate-200 pt-3">
                                 <label class="block text-xs font-bold mb-2">AI 사용 시 답변 개선 여부</label>
                                 <div class="flex flex-wrap gap-4 mb-2 text-xs">
@@ -1164,7 +1210,7 @@
 <div id="admin-auth-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center modal-overlay">
     <div class="bg-white p-6 rounded-xl shadow-2xl w-80 border border-slate-200 text-center">
         <h3 class="font-bold text-brand-navy mb-4 text-lg">교사 대시보드 로그인</h3>
-        <input type="password" id="admin-pw" class="w-full p-2 border border-slate-300 rounded mb-4 focus:ring-2 focus:ring-brand-teal text-center tracking-widest" placeholder="비밀번호(임시:1234)">
+        <input type="password" id="admin-pw" class="w-full p-2 border border-slate-300 rounded mb-4 focus:ring-2 focus:ring-brand-teal text-center tracking-widest" placeholder="비밀번호">
         <div class="flex gap-2">
             <button onclick="document.getElementById('admin-auth-modal').classList.add('hidden')" class="w-1/2 bg-slate-200 text-slate-700 py-2 rounded font-bold hover:bg-slate-300 transition">취소</button>
             <button id="admin-auth-submit-btn" onclick="verifyAdminAuth()" class="w-1/2 bg-brand-navy text-white py-2 rounded font-bold hover:bg-slate-800 transition shadow">확인</button>
@@ -1382,7 +1428,7 @@
     let apiOnlineStatus = { configured: false, available: false };
 
     // ===================== 클라우드 연동 (Google Sheets + Drive) =====================
-    // 배포 후 아래 URL을 Apps Script 웹 앱 배포 URL로 교체하세요. (배포 가이드 참고)
+    // 배포 후 아래 URL을 Apps Script 웹 앱 배포 URL로 교체하세요.
     const CLOUD = {
         URL: 'https://script.google.com/macros/s/AKfycbyI9MGXmP9HNzk93iJDkjBdOM0dMhZH2FO08VrkYHHMDuO-rxPUFcG9YzkfOGUkQlTJ/exec',
         KEY: 'orbital2026-vinegar-xk93'  // Apps Script 스크립트 속성의 SHARED_KEY와 동일하게 맞추세요
@@ -2933,17 +2979,77 @@
     }
     // ================================================================================
 
-    function toggleAiRevisionText(checkbox) {
-        const txt = document.getElementById('ai-revised-text');
-        if (checkbox.checked) {
-            txt.value = "수정 없음, 초안 내용 그대로 유지";
-            txt.readOnly = true;
-            txt.classList.add('bg-slate-100');
-        } else {
-            txt.value = "";
-            txt.readOnly = false;
-            txt.classList.remove('bg-slate-100');
-        }
+    // "수정 없음" 체크 시 해당 그룹의 입력 필드를 비활성화(회색)하고 비워둠 - 그룹: eq / conc / error
+    function toggleRevisionGroup(group, checked) {
+        const fieldMap = {
+            eq: ['rev-eq-vol', 'rev-eq-reason'],
+            conc: ['rev-conc-diluted', 'rev-conc-original'],
+            error: ['rev-error-text']
+        };
+        (fieldMap[group] || []).forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.disabled = checked;
+            if (checked) { el.value = ''; el.classList.add('bg-slate-100'); }
+            else { el.classList.remove('bg-slate-100'); }
+        });
+    }
+
+    // 그룹별로 "수정 없음"이면 원래 초안 값을, 아니면 AI 대화 후 수정값을 반환 (최종 보고서에 반영될 값)
+    function getFinalEqVol() {
+        const keep = document.getElementById('rev-eq-keep');
+        const rev = document.getElementById('rev-eq-vol');
+        if (keep && keep.checked) return appState.analysis.myEqVol;
+        return (rev && rev.value !== '') ? rev.value : appState.analysis.myEqVol;
+    }
+    function getFinalEqReason() {
+        const keep = document.getElementById('rev-eq-keep');
+        const rev = document.getElementById('rev-eq-reason');
+        if (keep && keep.checked) return appState.analysis.myEqReason || '';
+        return (rev && rev.value !== '') ? rev.value : (appState.analysis.myEqReason || '');
+    }
+    function getFinalConcDiluted() {
+        const keep = document.getElementById('rev-conc-keep');
+        const rev = document.getElementById('rev-conc-diluted');
+        const orig = document.getElementById('a-calc-diluted');
+        if (keep && keep.checked) return orig ? orig.value : '';
+        return (rev && rev.value !== '') ? rev.value : (orig ? orig.value : '');
+    }
+    function getFinalConcOriginal() {
+        const keep = document.getElementById('rev-conc-keep');
+        const rev = document.getElementById('rev-conc-original');
+        const orig = document.getElementById('a-calc-original');
+        if (keep && keep.checked) return orig ? orig.value : '';
+        return (rev && rev.value !== '') ? rev.value : (orig ? orig.value : '');
+    }
+    function getFinalErrorText() {
+        const keep = document.getElementById('rev-error-keep');
+        const rev = document.getElementById('rev-error-text');
+        const orig = document.getElementById('a-error-analysis');
+        if (keep && keep.checked) return orig ? orig.value : '';
+        return (rev && rev.value !== '') ? rev.value : (orig ? orig.value : '');
+    }
+
+    // 세 그룹의 수정 여부/내용을 사람이 읽기 좋은 텍스트로 요약 (교사 대시보드·시트 기록용)
+    function buildAiRevisionSummary() {
+        const eqKeep = document.getElementById('rev-eq-keep');
+        const concKeep = document.getElementById('rev-conc-keep');
+        const errKeep = document.getElementById('rev-error-keep');
+        const lines = [];
+
+        lines.push('[1. 당량점 판단] ' + ((eqKeep && eqKeep.checked)
+            ? '수정 없음 (초안 유지)'
+            : `수정함 → 부피 ${getFinalEqVol() || '-'}mL, 근거: ${getFinalEqReason() || '-'}`));
+
+        lines.push('[2. 식초 농도 예측] ' + ((concKeep && concKeep.checked)
+            ? '수정 없음 (초안 유지)'
+            : `수정함 → 희석액 ${getFinalConcDiluted() || '-'}M / 원액 ${getFinalConcOriginal() || '-'}M`));
+
+        lines.push('[3. 오차 원인 분석] ' + ((errKeep && errKeep.checked)
+            ? '수정 없음 (초안 유지)'
+            : `수정함 → ${getFinalErrorText() || '-'}`));
+
+        return lines.join('\n');
     }
 
     function updateQualityInspectionCard() {
@@ -2987,11 +3093,16 @@
             const rLabel = document.getElementById('r-label-acidity');
             setTxt('rep-label-acidity', rLabel ? rLabel.value : "6.0");
             
-            setTxt('rep-eq-vol', appState.analysis.myEqVol || '-'); 
-            setTxt('rep-eq-reason', appState.analysis.myEqReason || '');
+            setTxt('rep-eq-vol', getFinalEqVol() || '-'); 
+            setTxt('rep-eq-reason', getFinalEqReason());
             
-            const errAnalysis = document.getElementById('a-error-analysis');
-            setTxt('rep-error-text', errAnalysis ? errAnalysis.value : '');
+            setTxt('rep-error-text', getFinalErrorText());
+
+            // 농도 계산 입력란은 AI 수정값(또는 원래 초안값)으로 미리 채워둠 - 학생이 최종 확인 후 그대로 두거나 조정 가능
+            const repDiluted = document.getElementById('rep-input-m-diluted');
+            if (repDiluted && !repDiluted.value) repDiluted.value = getFinalConcDiluted();
+            const repOrig = document.getElementById('rep-input-m-orig');
+            if (repOrig && !repOrig.value) repOrig.value = getFinalConcOriginal();
             
             const convContainer = document.getElementById('rep-ai-conversation');
             if (convContainer) {
@@ -3027,8 +3138,7 @@
                 }
             }
             
-            const aiRev = document.getElementById('ai-revised-text');
-            setTxt('rep-ai-revised', aiRev ? aiRev.value : '');
+            setTxt('rep-ai-revised', buildAiRevisionSummary());
             
             const radio = document.querySelector('input[name="ai-improve"]:checked');
             setTxt('rep-ai-status', radio ? radio.value : '미선택'); 
@@ -3153,7 +3263,7 @@
             eqVol: getVal('rep-eq-vol'),
             draftEqReason: getVal('a-eq-reason'),
             errorAnalysis: getVal('a-error-analysis'),
-            aiRevised: getVal('ai-revised-text'),
+            aiRevised: buildAiRevisionSummary(),
             aiStatus: getVal('rep-ai-status'),
             aiReason: getVal('ai-improve-reason'),
             aiConversationLog: JSON.stringify((appState.analysis && appState.analysis.aiConversation) || []),
