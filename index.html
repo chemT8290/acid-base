@@ -2542,10 +2542,16 @@
                     .slice(0, -1) // 방금 보낸 사용자 메시지 제외(이미 userMessage로 별도 전달)
                     .map(m => ({ role: m.role, text: m.text }));
                 const result = await cloudCall({ action: 'chatTutor', history: history, userMessage: userMsg });
-                if (result && result.ok && result.reply) botReply = result.reply;
+                if (result && result.ok && result.reply) {
+                    botReply = result.reply;
+                } else {
+                    console.error('AI 튜터 응답 실패 상세:', result);
+                }
+            } else {
+                console.warn('AI 튜터: 클라우드(CLOUD.URL/KEY) 미설정 상태');
             }
         } catch (err) {
-            console.warn('AI 튜터 호출 오류:', err);
+            console.error('AI 튜터 호출 네트워크 오류:', err);
         }
 
         if (!botReply) botReply = getAiTutorOfflineFallback(userMsg);
