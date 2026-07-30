@@ -1318,6 +1318,19 @@
         }
         return result;
     }
+    // Apps Script(Gemini)를 통한 AI 피드백/세특/루브릭 생성 호출
+    async function callCloudAiFeedback(evidence, teacherOptions) {
+        if (!cloudReady()) return null;
+        try {
+            const result = await cloudCall({ action: 'generateFeedback', studentEvidence: evidence, teacherOptions });
+            if (result && result.ok) return result.result;
+            console.warn('Apps Script AI 피드백 생성 실패:', result && result.error);
+            return null;
+        } catch (e) {
+            console.warn('Apps Script AI 피드백 호출 오류:', e);
+            return null;
+        }
+    }
     // ================================================================================
 
     function showAlert(msg) { 
@@ -1404,6 +1417,14 @@
     async function checkApiServerStatus() {
         const dot = document.getElementById('api-status-dot');
         const txt = document.getElementById('api-status-text');
+
+        if (cloudReady()) {
+            apiOnlineStatus = { configured: true, available: true, via: 'appsscript' };
+            if (dot) dot.className = "w-2.5 h-2.5 rounded-full bg-teal-400";
+            if (txt) txt.innerText = "AI 연결됨 (Apps Script/Gemini)";
+            return;
+        }
+
         try {
             const res = await fetch('/api/ai-status');
             if(res.ok) {
@@ -3097,16 +3118,14 @@
 
             try {
                 const evidence = buildStudentEvidence(student);
-                let resultJson = null;
+                const teacherOptions = { feedbackLength: '보통', recordLength: '표준형', recordFocus: '균형형' };
+                let resultJson = await callCloudAiFeedback(evidence, teacherOptions);
 
-                if (apiOnlineStatus.configured && apiOnlineStatus.available) {
+                if (!resultJson && apiOnlineStatus.configured && apiOnlineStatus.available) {
                     const res = await fetch('/api/generate-teacher-feedback', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            studentEvidence: evidence,
-                            teacherOptions: { feedbackLength: '보통', recordLength: '표준형', recordFocus: '균형형' }
-                        })
+                        body: JSON.stringify({ studentEvidence: evidence, teacherOptions })
                     });
                     if (res.ok) resultJson = await res.json();
                 }
@@ -3347,17 +3366,15 @@
         if (!student) return;
 
         const evidence = buildStudentEvidence(student);
-        let resultJson = null;
+        const teacherOptions = { feedbackLength: '보통', recordLength: '표준형', recordFocus: '균형형' };
+        let resultJson = await callCloudAiFeedback(evidence, teacherOptions);
 
-        if (apiOnlineStatus.configured && apiOnlineStatus.available) {
+        if (!resultJson && apiOnlineStatus.configured && apiOnlineStatus.available) {
             try {
                 const res = await fetch('/api/generate-teacher-feedback', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        studentEvidence: evidence,
-                        teacherOptions: { feedbackLength: '보통', recordLength: '표준형', recordFocus: '균형형' }
-                    })
+                    body: JSON.stringify({ studentEvidence: evidence, teacherOptions })
                 });
                 if (res.ok) resultJson = await res.json();
             } catch (e) {
