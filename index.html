@@ -1322,6 +1322,7 @@
                 updateMblUploadStatusUI();
             }
             if(step === 3) {
+                initStep3Chart(); // [수정] 초기화 함수 호출 추가
                 updateStep3Chart();
                 if (appState.analysis.isLocked) {
                     runSystemAnalysis();
@@ -1660,6 +1661,60 @@
     }
 
     let rChart, step3Chart, dChart;
+
+    // [수정] 누락되어 있던 실제 데이터 적정 곡선(2단계) 차트 초기화 함수 추가
+    function initRealChart() {
+        const canvas = document.getElementById('r-chart');
+        if (!canvas) return;
+        if (rChart) rChart.destroy();
+        rChart = new Chart(canvas.getContext('2d'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: '실험 데이터 (부피-pH)',
+                    data: (appState.realData.rows || []).map(r => ({ x: r.v, y: r.ph })),
+                    borderColor: '#0ea5e9', backgroundColor: '#0ea5e9',
+                    showLine: true, pointRadius: 3, tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: true, position: 'top' } },
+                scales: {
+                    x: { type: 'linear', title: { display: true, text: '부피 (mL)' } },
+                    y: { min: 0, max: 14, title: { display: true, text: 'pH' } }
+                },
+                animation: false
+            }
+        });
+    }
+
+    // [수정] 누락되어 있던 나의 실험 데이터 적정 곡선(3단계, 당량점 판단용) 차트 초기화 함수 추가
+    function initStep3Chart() {
+        const canvas = document.getElementById('step3-r-chart');
+        if (!canvas) return;
+        if (step3Chart) step3Chart.destroy();
+        step3Chart = new Chart(canvas.getContext('2d'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: '나의 실험 데이터',
+                    data: (appState.realData.rows || []).map(r => ({ x: r.v, y: r.ph })),
+                    borderColor: '#d946ef', backgroundColor: '#d946ef',
+                    showLine: true, pointRadius: 3, tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: true, position: 'top' } },
+                scales: {
+                    x: { type: 'linear', title: { display: true, text: '부피 (mL)' } },
+                    y: { min: 0, max: 14, title: { display: true, text: 'pH' } }
+                },
+                animation: false
+            }
+        });
+    }
 
     function normalizeHeaderString(h) {
         if (!h) return "";
