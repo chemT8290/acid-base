@@ -719,7 +719,7 @@
 
                 <div class="bg-slate-50 p-2.5 rounded border border-slate-200 mb-2 text-xs space-y-1">
                     <div class="flex justify-between items-center">
-                        <span class="font-bold text-slate-700">파일 인식 상태:</span>
+                        <span class="font-bold text-slate-700">MBL 파일 인식 상태:</span>
                         <button onclick="resetUploadedRawFiles()" class="text-[10px] text-red-500 hover:underline font-bold">업로드 파일 초기화</button>
                     </div>
                     <div class="flex gap-2 text-[11px]">
@@ -751,7 +751,7 @@
     <section id="step-3" class="step-content hidden max-w-6xl mx-auto space-y-6">
         
         <div class="bg-brand-navy text-white p-4 rounded-xl shadow-md text-center">
-            <h2 class="text-xl font-serif-title font-bold">데이터 분석 및 AI 교차 검증</h2>
+            <h2 class="text-xl font-serif-title font-bold">데이터 분석 및 외부 AI 교차 검증</h2>
         </div>
 
         <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm mb-6">
@@ -781,7 +781,7 @@
                     
                     <button id="btn-lock-draft" onclick="confirmDraftAndUnlockAI()" class="w-full bg-brand-teal hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-lg shadow transition-colors flex flex-col items-center justify-center">
                         <span class="text-base font-bold">초안 작성 완료</span>
-                        <span class="text-xs font-normal opacity-95 mt-0.5">(시스템 계산 값 비교 및 AI 교차 검증)</span>
+                        <span class="text-xs font-normal opacity-95 mt-0.5">(시스템 계산 값 비교 및 외부 AI 교차 검증)</span>
                     </button>
                 </div>
             </div>
@@ -790,7 +790,7 @@
                 <div id="analysis-lock" class="absolute inset-0 bg-white/90 backdrop-blur-sm z-30 flex flex-col items-center justify-center rounded-xl border border-slate-200 text-center p-6 transition-opacity">
                     <svg class="w-10 h-10 text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                     <h3 class="font-bold text-slate-700">왼쪽의 초안을 모두 작성한 후 [초안 작성 완료] 버튼을 눌러주세요.</h3>
-                    <p class="text-xs text-slate-500 mt-2">초안 제출 후 시스템 참고값과 AI 교차 검증창이 활성화됩니다.</p>
+                    <p class="text-xs text-slate-500 mt-2">초안 제출 후 시스템 참고값과 외부 AI 교차 검증창이 활성화됩니다.</p>
                 </div>
 
                 <div id="analysis-content" class="opacity-50 pointer-events-none transition-opacity duration-300 space-y-4">
@@ -808,7 +808,7 @@
                     </div>
 
                     <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                        <h3 class="font-bold text-brand-navy mb-2">AI 대화 검증 기록</h3>
+                        <h3 class="font-bold text-brand-navy mb-2">외부 AI 대화 검증 기록</h3>
                         <div class="bg-amber-50 p-3 text-xs text-amber-900 mb-4 border border-amber-200 rounded leading-relaxed shadow-inner">
                             <p class="font-bold mb-1 flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg> 프롬프트 작성 주의사항</p>
                             개인정보 보호를 위해 대화에는 닉네임만 사용하고, 이름 · 학번 · 학교명은 입력하지 마세요. 정답을 일방적으로 요구하지 말고 자신의 판단을 먼저 제시한 뒤 검증을 요청하세요.
@@ -945,7 +945,7 @@
             </div>
 
             <div class="pdf-section mb-8 print-break-inside-avoid text-sm">
-                <h3 class="font-bold text-lg text-brand-navy border-l-4 border-brand-teal pl-2 mb-3">3. AI 대화 검증 기록</h3>
+                <h3 class="font-bold text-lg text-brand-navy border-l-4 border-brand-teal pl-2 mb-3">3. 외부 AI 대화 검증 기록</h3>
                 <div class="bg-slate-50 p-3 rounded border border-slate-200 print:bg-white mb-3">
                     <strong class="block mb-2 text-brand-navy border-b pb-1">AI 튜터 대화 전문</strong>
                     <div id="rep-ai-conversation" class="space-y-2 text-xs max-h-[400px] overflow-y-auto print:max-h-none"></div>
@@ -1242,6 +1242,7 @@
             rawPhRows: null, rawDropRows: null, uploadStatus: "대기 중", uploadedRawFiles: []
         },
         analysis: { myEqVol: null, myEqReason: "", myCalcDil: null, myCalcOrig: null, errorAnalysis: "", sysEqVol: null, sysEqConc: null, isLocked: false, aiConversation: [] },
+        quiz: { score: null, total: 10 },
         report: { calculationImage: null }
     };
 
@@ -1754,11 +1755,25 @@
         const uDiff = uf-ui, aDiff = appState.vLab.currentReading - parseFloat(appState.vLab.initialReading);
         const veq = (parseFloat(appState.vLab.hiddenConc)*10)/0.1;
         
-        let fb = "";
-        if(Math.abs(uDiff-aDiff)>0.15) fb = `<span class='text-amber-600 font-bold'>눈금 판독 오차 (실제: ${aDiff.toFixed(2)}mL)</span>`;
-        else if(Math.abs(aDiff-veq)<=0.2) fb = "<span class='text-brand-teal font-bold'>매우 정확함 (적정 타이밍 및 판독 완벽)</span>";
-        else if(aDiff<veq) fb = "<span class='text-slate-600'>덜 넣음 (종말점 이전 도달 판단)</span>";
-        else fb = "<span class='text-red-500 font-bold'>더 넣음 (과량 적정 발생)</span>";
+        let readingFb, endpointFb;
+
+        // ① 눈금 판독 정확도 (기록값 vs 실제 장치 사용량)
+        if (Math.abs(uDiff - aDiff) > 0.15) {
+            readingFb = `<span class='text-amber-600 font-bold'>눈금 판독 오차</span> (기록 ${uDiff.toFixed(2)}mL / 실제 ${aDiff.toFixed(2)}mL)`;
+        } else {
+            readingFb = `<span class='text-brand-teal font-bold'>눈금을 정확하게 판독함</span>`;
+        }
+
+        // ② 당량점 대비 적정 종료 시점 (과량/미달 여부) — 판독 정확도와 별개로 항상 함께 안내
+        if (Math.abs(aDiff - veq) <= 0.2) {
+            endpointFb = `<span class='text-brand-teal font-bold'>당량점 부근에서 정확히 적정을 종료함</span>`;
+        } else if (aDiff < veq) {
+            endpointFb = `<span class='text-slate-600 font-bold'>당량점 도달 전 적정 종료(미달)</span> — 사용량이 실제보다 적게 측정되어 계산 농도가 낮게 나올 수 있음`;
+        } else {
+            endpointFb = `<span class='text-red-500 font-bold'>당량점을 지나 과량 적정</span> — 사용량이 실제보다 많이 측정되어 계산 농도가 높게 나올 수 있음`;
+        }
+
+        let fb = `${readingFb}<br>${endpointFb}`;
         
         appState.vLab.records.push({i:ui, f:uf, d:uDiff, fb});
         const tr = document.createElement('tr'); 
@@ -1924,6 +1939,8 @@
             }
         }
         document.getElementById('quiz-result').innerText = `총 ${sc} / 10 문항 정답`;
+        appState.quiz.score = sc;
+        saveState();
     }
 
     let rChart, step3Chart, dChart;
@@ -2808,7 +2825,7 @@
             class: appState.student.class || '미기재',
             nickname: appState.student.nickname || '익명',
             password: appState.student.password || '0000',
-            quizScore: 10,
+            quizScore: (appState.quiz && appState.quiz.score != null) ? appState.quiz.score : 0,
             brand: getVal('r-brand'),
             labelAcidity: getVal('r-label-acidity'),
             eqVol: getVal('rep-eq-vol'),
@@ -3424,8 +3441,8 @@
             },
             subjectRecord: {
                 short: `식초 중화 적정 실험에서 수집한 pH 데이터를 바탕으로 당량점(${eq}mL)을 판단하고 아세트산 농도를 도출함.`,
-                standard: `식초의 중화 적정 탐구에서 센서 데이터를 분석하여 적정 곡선과 1차 미분값을 파악하고, 당량점(${eq}mL)을 명확한 근거로 도출함. 아세트산 수용액의 몰농도 및 실험 산도(${acidity}%)를 수기 계산으로 구하였으며, 오차 발생 원인에 대해 논리적으로 고찰하는 탐구 역량을 보임.`,
-                detailed: `식초 품질 검증 프로젝트에서 pH 센서와 방울계수기를 이용하여 아세트산 수용액의 적정 데이터를 수집하고 반응 곡선으로 분석함. 1차 미분 변화율을 통해 당량점(${eq}mL)을 판단하고 반응비를 적용하여 원액 농도 및 산도(${acidity}%)를 도출함. 오차 원인 분석 과정에서 적하 속도 및 센서 반응 시간에 따른 편차 가능성을 입체적으로 진단하고 AI 교차 검증을 활용하여 과학적 사고력을 나타냄.`
+                standard: `식초의 중화 적정 탐구에서 MBL 센서 데이터를 분석하여 적정 곡선과 1차 미분값을 파악하고, 당량점(${eq}mL)을 명확한 근거로 도출함. 아세트산 수용액의 몰농도 및 실험 산도(${acidity}%)를 수기 계산으로 구하였으며, 오차 발생 원인에 대해 논리적으로 고찰하는 탐구 역량을 보임.`,
+                detailed: `식초 품질 검증 프로젝트에서 MBL pH 센서와 방울계수기를 이용하여 아세트산 수용액의 적정 데이터를 수집하고 반응 곡선으로 분석함. 1차 미분 변화율을 통해 당량점(${eq}mL)을 판단하고 반응비를 적용하여 원액 농도 및 산도(${acidity}%)를 도출함. 오차 원인 분석 과정에서 적하 속도 및 센서 반응 시간에 따른 편차 가능성을 입체적으로 진단하고 AI 교차 검증을 활용하여 과학적 사고력을 나타냄.`
             }
         };
     }
