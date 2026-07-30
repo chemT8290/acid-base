@@ -296,48 +296,76 @@
 
 <main class="container mx-auto px-4 py-6 flex-grow">
     
-    <section id="step-0" class="step-content max-w-4xl mx-auto">
+    <section id="step-0" class="step-content max-w-6xl mx-auto">
         <div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200">
             <div class="bg-brand-navy p-6 text-white text-center">
                 <h2 class="text-3xl font-serif-title font-bold mb-2">MISSION BRIEFING</h2>
                 <p class="text-slate-300">식품 품질검사원 신입 교육 및 현장 실무</p>
             </div>
-            <div class="p-6 md:p-10 grid md:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold text-brand-teal mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        사건 개요
-                    </h3>
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-100 text-sm space-y-3 leading-relaxed">
-                        <p><strong>사건 번호:</strong> VQ-2026-074</p>
-                        <p><strong>의뢰 기관:</strong> 소비자권익보호연대</p>
-                        <p><strong>상황:</strong> 시중에 판매되는 A브랜드 식초가 "라벨에 표기된 산도(%)보다 물을 많이 섞어 묽다"는 제보가 접수되었습니다.</p>
-                        <p><strong>임무:</strong> 신입 품질검사원으로서 해당 식초의 아세트산 농도를 중화 적정법으로 분석하고, 라벨 표기의 진위 여부를 판정하는 최종 보고서를 제출하십시오.</p>
+            <div class="p-6 md:p-10">
+                <div class="space-y-6">
+                    <!-- 사건 개요: 케이스 파일 스타일 -->
+                    <div class="relative bg-[#fdfbf3] border-2 border-dashed border-slate-300 rounded-lg p-5 shadow-sm">
+                        <div class="absolute -top-3 -right-3 w-16 h-16 rounded-full border-4 border-double border-brand-pink bg-white flex items-center justify-center rotate-[-12deg] shadow-sm">
+                            <span class="text-brand-pink font-black text-[9px] leading-tight text-center">CASE<br>FILE</span>
+                        </div>
+                        <div class="mb-4 pb-3 border-b border-dashed border-slate-300 pr-16">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-brand-navy shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                                <h3 class="text-lg font-bold text-slate-800 tracking-wide">사건 개요</h3>
+                            </div>
+                            <p class="mt-1 text-[11px] text-slate-400">사건 번호 <span class="font-mono text-slate-500">VQ-2026-074</span></p>
+                        </div>
+                        <dl class="space-y-3 text-sm">
+                            <div class="flex gap-3">
+                                <dt class="shrink-0 w-16 font-bold text-brand-navy">의뢰 기관</dt>
+                                <dd class="text-slate-700">소비자권익보호연대</dd>
+                            </div>
+                            <div class="flex gap-3">
+                                <dt class="shrink-0 w-16 font-bold text-brand-navy">상황</dt>
+                                <dd class="text-slate-700 leading-relaxed">시중에 판매되는 A브랜드 식초가 "라벨에 표기된 산도(%)보다 물을 많이 섞어 묽다"는 제보가 접수되었습니다.</dd>
+                            </div>
+                            <div class="flex gap-3 bg-amber-50 -mx-1.5 px-2.5 py-2.5 rounded border border-amber-100">
+                                <dt class="shrink-0 w-16 font-bold text-amber-700">임무</dt>
+                                <dd class="text-amber-900 leading-relaxed">신입 품질검사원으로서 해당 식초의 아세트산 농도를 중화 적정법으로 분석하고, 라벨 표기의 진위 여부를 판정하는 최종 보고서를 제출하십시오.</dd>
+                            </div>
+                        </dl>
                     </div>
-                </div>
-                
-                <div class="bg-slate-100 p-6 rounded-xl border border-slate-200">
-                    <h3 class="text-xl font-bold text-brand-navy mb-4">요원 등록</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">코드명 (닉네임) <span class="text-red-500">*</span></label>
-                            <input type="text" id="input-nickname" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-brand-teal focus:border-brand-teal" placeholder="예: 셜록, 화학마스터">
+
+                    <!-- 요원 등록: ID 카드 스타일 -->
+                    <div class="rounded-xl overflow-hidden shadow-lg border border-slate-200">
+                        <div class="bg-brand-navy px-6 py-4 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 6.196 9 9 0 015.12 17.804zM12 11a3 3 0 100-6 3 3 0 000 6z"></path></svg>
+                            <h3 class="text-lg font-bold text-white tracking-wide">요원 등록</h3>
+                            <span class="ml-auto text-[10px] font-mono text-brand-teal border border-brand-teal/60 rounded px-2 py-0.5">ID CARD</span>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">소속 (학급/조)</label>
-                            <input type="text" id="input-class" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-brand-teal" placeholder="예: 2학년 3반 1조">
+                        <div class="bg-white p-6 space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">코드명 (닉네임) <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                    <input type="text" id="input-nickname" class="w-full pl-9 pr-3 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-brand-teal focus:border-brand-teal" placeholder="예: 셜록, 화학마스터">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">소속 (학급/조)</label>
+                                    <input type="text" id="input-class" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-brand-teal" placeholder="2학년 3반 1조">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">분석 일자</label>
+                                    <input type="date" id="input-date" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-brand-teal">
+                                </div>
+                            </div>
+                            <div class="bg-amber-50 text-amber-800 text-xs p-3 rounded border border-amber-200 flex gap-2">
+                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                <span>주의: 실명, 학번, 학교명 등 개인정보는 절대 입력하지 마세요. 화면 캡처 및 PDF 제출용으로만 사용됩니다.</span>
+                            </div>
+                            <button onclick="startMission()" class="w-full bg-brand-navy hover:bg-slate-800 text-white font-bold py-3 px-4 rounded transition-colors shadow-md flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                                임무 시작
+                            </button>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">분석 일자</label>
-                            <input type="date" id="input-date" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-brand-teal">
-                        </div>
-                        <div class="bg-amber-50 text-amber-800 text-xs p-3 rounded border border-amber-200 flex gap-2">
-                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                            <span>주의: 실명, 학번, 학교명 등 개인정보는 절대 입력하지 마세요. 화면 캡처 및 PDF 제출용으로만 사용됩니다.</span>
-                        </div>
-                        <button onclick="startMission()" class="w-full bg-brand-navy hover:bg-slate-800 text-white font-bold py-3 px-4 rounded transition-colors mt-4 shadow-md">
-                            임무 시작
-                        </button>
                     </div>
                 </div>
             </div>
@@ -2947,6 +2975,36 @@
                 selectReplacements.push({ select, div });
             });
 
+            // html2canvas가 <input type="number"> 등 네이티브 입력 컨트롤의 값을 제대로 그리지 못해
+            // 숫자가 깨지거나 잘려 보이는 문제가 있음. 캡처 직전에만 값을 일반 텍스트로 바꿔서 회피하고,
+            // 캡처 후 원래 입력창으로 복원함(화면상 실제 입력 기능에는 영향 없음).
+            const inputs = Array.from(reportElement.querySelectorAll('input'))
+                .filter(el => ['file', 'checkbox', 'radio', 'password'].indexOf(el.type) === -1);
+            const inputReplacements = [];
+
+            inputs.forEach(input => {
+                const text = input.value !== '' ? input.value : (input.placeholder || '');
+                const rect = input.getBoundingClientRect();
+                const computed = window.getComputedStyle(input);
+
+                const div = document.createElement("div");
+                div.className = "pdf-select-value";
+                div.textContent = text;
+
+                if (rect.width > 0) div.style.width = `${rect.width}px`;
+                div.style.fontSize = computed.fontSize;
+                div.style.fontWeight = computed.fontWeight;
+                div.style.color = computed.color;
+                div.style.backgroundColor = computed.backgroundColor;
+                div.style.borderColor = computed.borderColor;
+                div.style.textAlign = computed.textAlign;
+                div.style.justifyContent = computed.textAlign === 'center' ? 'center' : (computed.textAlign === 'right' ? 'flex-end' : 'flex-start');
+
+                input.parentNode.insertBefore(div, input);
+                input.style.display = "none";
+                inputReplacements.push({ input, div });
+            });
+
             const textareas = Array.from(reportElement.querySelectorAll("textarea"));
             const textareaReplacements = [];
 
@@ -2971,6 +3029,19 @@
                 textarea.style.display = "none";
                 textareaReplacements.push({ textarea, div });
             });
+
+            // html2canvas가 object-fit(contain)을 온전히 지원하지 못해, 세로로 긴 사진이
+            // 박스 높이(max-height)에 맞춰 축소되지 않고 아래쪽이 잘려 캡처되는 문제가 있음.
+            // 캡처 직전에만 높이 제한을 풀어(자연 비율로 전체가 보이도록) 회피하고, 캡처 후 원래대로 복원함.
+            const calcImg = document.getElementById('calc-img-preview');
+            let calcImgOriginalStyle = null;
+            if (calcImg && calcImg.offsetParent !== null) {
+                calcImgOriginalStyle = calcImg.getAttribute('style') || '';
+                calcImg.style.maxHeight = 'none';
+                calcImg.style.height = 'auto';
+                calcImg.style.width = 'auto';
+                calcImg.style.maxWidth = '100%';
+            }
 
             if (document.fonts && document.fonts.ready) await document.fonts.ready;
             await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
@@ -3025,10 +3096,17 @@
                     select.style.display = "";
                     if (div && div.parentNode) div.parentNode.removeChild(div);
                 });
+                inputReplacements.forEach(({ input, div }) => {
+                    input.style.display = "";
+                    if (div && div.parentNode) div.parentNode.removeChild(div);
+                });
                 textareaReplacements.forEach(({ textarea, div }) => {
                     textarea.style.display = "";
                     if (div && div.parentNode) div.parentNode.removeChild(div);
                 });
+                if (calcImg && calcImgOriginalStyle !== null) {
+                    calcImg.setAttribute('style', calcImgOriginalStyle);
+                }
             }
 
         } catch (error) {
