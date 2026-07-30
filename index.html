@@ -1314,7 +1314,8 @@
         if (result && result.ok) {
             setCloudStatus('클라우드 저장 완료 ' + new Date().toLocaleTimeString(), false);
         } else {
-            setCloudStatus('클라우드 저장 실패 (로컬에는 저장됨)', true);
+            console.error('클라우드 저장 실패 상세:', result);
+            setCloudStatus('클라우드 저장 실패 (로컬에는 저장됨)' + (result && result.error ? ' - ' + result.error : ' - 서버 응답 없음(네트워크/URL 확인 필요)'), true);
         }
         return result;
     }
