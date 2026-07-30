@@ -413,7 +413,7 @@
         <!-- Virtual Lab 1 -->
         <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
             <div class="bg-slate-100 p-4 border-b border-slate-200 flex justify-between items-center">
-                <h2 class="font-bold text-lg text-brand-navy">가상실험 1: 지시약 중화 적정</h2>
+                <h2 class="font-bold text-lg text-brand-navy">가상실험 1: 지시약을 활용한 중화 적정</h2>
                 <div class="text-sm font-mono bg-white px-3 py-1 rounded border">NaOH 0.100 M | 시료 10.0 mL</div>
             </div>
             
@@ -436,7 +436,7 @@
 
                         <!-- Magnifier Window -->
                         <div class="absolute left-[10px] top-[20px] bg-white border-4 border-slate-300 rounded-xl shadow-2xl w-[130px] h-[180px] overflow-hidden pointer-events-none z-30">
-                            <div class="absolute top-1 left-1/2 -translate-x-1/2 text-[10px] font-bold text-slate-500 z-50 bg-white/90 px-1 py-0.5 rounded shadow-sm">메니스커스 눈금</div>
+                            <div class="absolute top-1 left-1/2 -translate-x-1/2 text-center z-50 bg-white/90 px-1.5 py-0.5 rounded shadow-sm"><span class="block text-sm font-extrabold text-slate-700 leading-tight">눈금</span><span class="block text-[10px] font-bold text-slate-500 leading-tight">메니스커스 읽기</span></div>
                             <div class="absolute top-1/2 left-0 w-full h-[2px] bg-red-500/80 z-40 -translate-y-1/2 shadow-[0_0_3px_rgba(255,0,0,0.5)]"></div>
                             <div id="v-mag-content" class="absolute left-1/2 w-[110px] h-[2500px] -translate-x-1/2 origin-top transition-transform duration-75" style="top: 90px; transform: translateY(0px);">
                                 <div id="v-mag-liquid" class="absolute bottom-0 left-0 w-full bg-blue-100/50 transition-all duration-75" style="height: 100%;">
@@ -692,7 +692,25 @@
             
             <div class="mt-6 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-800 p-4 rounded-lg">
                 <span id="quiz-result" class="font-bold text-brand-amber text-lg">모든 문제를 풀고 정답을 확인하세요.</span>
-                <button onclick="checkQuiz()" class="w-full md:w-auto bg-brand-teal hover:bg-teal-600 text-white font-bold py-3 px-8 rounded shadow-lg transition-colors">정답 확인 및 피드백 보기</button>
+                <button onclick="checkQuiz()" class="w-full md:w-auto bg-brand-teal hover:bg-teal-600 text-white font-bold py-3 px-8 rounded shadow-lg transition-colors">정답 확인 및 해설 보기</button>
+            </div>
+
+            <div class="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm mt-6">
+                <div class="bg-brand-navy text-white px-3 py-2 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-brand-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                    <span class="text-xs font-bold">AI 화학 튜터</span>
+                    <span class="ml-auto text-[10px] font-mono text-brand-teal border border-brand-teal/50 rounded px-1.5 py-0.5">Gemini 3.6 Flash</span>
+                </div>
+                <div class="flex gap-2 overflow-x-auto p-2 bg-slate-50 border-b border-slate-200">
+                    <button type="button" onclick="sendGeneralQuickPrompt('중화반응의 원리가 뭐야?')" class="shrink-0 px-3 py-1.5 bg-white hover:bg-teal-50 text-slate-600 hover:text-brand-teal text-[11px] font-medium rounded-full border border-slate-200 hover:border-brand-teal transition-colors">🧪 중화반응의 원리</button>
+                    <button type="button" onclick="sendGeneralQuickPrompt('당량점과 종말점의 차이가 뭐야?')" class="shrink-0 px-3 py-1.5 bg-white hover:bg-teal-50 text-slate-600 hover:text-brand-teal text-[11px] font-medium rounded-full border border-slate-200 hover:border-brand-teal transition-colors">⚖️ 당량점 vs 종말점</button>
+                    <button type="button" onclick="sendGeneralQuickPrompt('중화점에서 지시약 색깔이 변하는 이유가 뭐야?')" class="shrink-0 px-3 py-1.5 bg-white hover:bg-teal-50 text-slate-600 hover:text-brand-teal text-[11px] font-medium rounded-full border border-slate-200 hover:border-brand-teal transition-colors">🎨 지시약 색 변화 이유</button>
+                </div>
+                <div id="general-chat-messages" class="h-64 overflow-y-auto p-3 space-y-3 bg-slate-50 text-xs"></div>
+                <form onsubmit="handleGeneralChatSubmit(event)" class="flex items-center gap-2 p-2 border-t border-slate-200 bg-white">
+                    <input type="text" id="general-chat-input" placeholder="닉네임 등 개인정보 없이 질문을 입력하세요..." class="flex-grow p-2 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-brand-teal" autocomplete="off">
+                    <button type="submit" id="general-chat-send-btn" class="bg-brand-teal hover:bg-teal-600 text-white px-3 py-2 rounded text-xs font-bold transition-colors shrink-0">전송</button>
+                </form>
             </div>
         </div>
     </section>
@@ -702,7 +720,7 @@
         <div class="bg-amber-50 p-5 rounded-xl border border-amber-200 shadow-sm">
             <h3 class="font-bold text-amber-800 mb-3 text-lg flex items-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                실험 안전 및 정밀도 체크리스트 (8항목)
+                체크리스트
             </h3>
             <div id="checklist" class="grid sm:grid-cols-2 gap-3 text-sm text-slate-700">
                 <label class="flex items-start gap-2 cursor-pointer hover:text-amber-900"><input type="checkbox" class="mt-1 w-4 h-4 accent-amber-600 rounded flex-shrink-0"> 1. 실험복, 보안경, 실험용 장갑 등 안전 장비를 올바르게 착용하였다.</label>
@@ -736,7 +754,7 @@
 
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col h-[400px]">
                 <div class="flex justify-between items-end border-b pb-2 mb-2">
-                    <h3 class="font-bold text-brand-navy">데이터 수집 (자동/직접 입력)</h3>
+                    <h3 class="font-bold text-brand-navy">데이터 수집 (파일 업로드/직접 작성)</h3>
                     <div class="flex gap-2">
                         <button onclick="loadSampleData()" class="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-xs hover:bg-slate-200 font-bold">예시 로드</button>
                         <label class="px-2 py-1 bg-brand-teal text-white text-xs font-bold rounded cursor-pointer hover:bg-teal-600 shadow-sm transition">
@@ -747,7 +765,7 @@
 
                 <div class="bg-slate-50 p-2.5 rounded border border-slate-200 mb-2 text-xs space-y-1">
                     <div class="flex justify-between items-center">
-                        <span class="font-bold text-slate-700">MBL 파일 인식 상태:</span>
+                        <span class="font-bold text-slate-700">파일 인식 상태:</span>
                         <button onclick="resetUploadedRawFiles()" class="text-[10px] text-red-500 hover:underline font-bold">업로드 파일 초기화</button>
                     </div>
                     <div class="flex gap-2 text-[11px]">
@@ -771,7 +789,7 @@
         </div>
 
         <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 class="font-bold text-brand-navy mb-4">수집된 데이터 적정 곡선 산점도</h3>
+            <h3 class="font-bold text-brand-navy mb-4">수집된 데이터를 바탕으로 그린 적정 곡선</h3>
             <div class="h-[350px] w-full"><canvas id="r-chart"></canvas></div>
         </div>
     </section>
@@ -779,13 +797,13 @@
     <section id="step-3" class="step-content hidden max-w-6xl mx-auto space-y-6">
         
         <div class="bg-brand-navy text-white p-4 rounded-xl shadow-md text-center">
-            <h2 class="text-xl font-serif-title font-bold">데이터 분석 및 AI 교차 검증</h2>
+            <h2 class="text-xl font-serif-title font-bold">데이터 분석 및 AI 활용 검증</h2>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div class="space-y-4 min-w-0">
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                    <h3 class="font-bold text-brand-navy mb-2 text-lg">나의 실험 데이터 적정 곡선 (당량점 판단용)</h3>
+                    <h3 class="font-bold text-brand-navy mb-2 text-lg">수집된 데이터를 바탕으로 그린 적정 곡선</h3>
                     <div class="h-[300px] w-full border border-slate-100 rounded p-2"><canvas id="step3-r-chart"></canvas></div>
                 </div>
 
@@ -823,13 +841,12 @@
                 <div id="analysis-content-sys" class="opacity-50 pointer-events-none transition-opacity duration-300 h-full">
                     <div class="bg-fuchsia-50 p-5 rounded-xl border border-fuchsia-200 shadow-sm h-full">
                         <div class="bg-white/70 border border-fuchsia-100 rounded-lg p-4 mb-4 text-sm text-slate-700 leading-relaxed space-y-2 math-text-flow">
-                            <h3 class="font-bold text-brand-navy mb-2 text-lg">📈 적정 곡선으로 당량점 해석하기</h3>
-                            <strong class="block text-fuchsia-800 text-base mb-1">왜 당량점에서 pH가 급격히 변할까?</strong>
+                            <strong class="block text-fuchsia-800 text-base mb-1">📈 적정 곡선으로 당량점 해석하기</strong>
                             <p>중화 적정이 진행되는 동안, 넣어주는 NaOH의 <span class="inline-term">\(\text{OH}^-\)</span>는 식초(아세트산)에서 나온 <span class="inline-term">\(\text{H}^+\)</span>과 반응해 물을 만들며 계속 소모됩니다. 당량점에 이르기 전까지는 아직 남아있는 <span class="inline-term">\(\text{H}^+\)</span>이 많아 용액이 완만하게 산성을 유지하지만, 당량점 부근에서는 반응할 <span class="inline-term">\(\text{H}^+\)</span>이 거의 다 소모된 상태라 아주 적은 양의 NaOH만 더해도 용액이 급격히 염기성 쪽으로 넘어갑니다. pH는 <span class="inline-term">\([\text{H}^+]\)</span>의 음의 로그값(<span class="inline-term">\(-\log[\text{H}^+]\)</span>)이라, 이온 농도가 아주 작아지는 이 구간에서는 pH 값이 유난히 크게 요동칩니다.</p>
                             <p>이렇게 pH가 가장 급격하게 변하는 구간의 기울기, 즉 <span class="inline-term">\(\Delta\text{pH}/\Delta V\)</span>(부피가 조금 변할 때 pH가 얼마나 변하는지)를 계산하면, 이 값이 <strong>최댓값</strong>이 되는 지점이 곡선이 가장 가파르게 꺾이는 지점과 정확히 일치합니다. 그래서 1차 미분 그래프의 뾰족한 봉우리(peak) 위치를 당량점으로 판단할 수 있습니다.</p>
 
                             <div class="mt-3 pt-3 border-t border-fuchsia-200">
-                                <p class="text-sm font-bold text-fuchsia-800 mb-2">🎛 슬라이더를 움직여 직접 확인해보세요 (예시 곡선)</p>
+                                <p class="text-base font-bold text-fuchsia-800 mb-2">🎛 슬라이더를 움직여 직접 확인해보세요 (예시 곡선)</p>
                                 <input type="range" id="deriv-demo-slider" min="0" max="150" value="0" step="1" class="w-full accent-fuchsia-500 mb-3">
                                 <div class="grid grid-cols-3 gap-2 text-center mb-3">
                                     <div class="bg-white rounded border border-fuchsia-100 p-2"><span class="block text-[11px] text-slate-500">부피 (mL)</span><span id="deriv-demo-vol" class="font-mono font-bold text-fuchsia-800">0.0</span></div>
@@ -844,7 +861,7 @@
                             </div>
                         </div>
 
-                        <h3 class="font-bold text-fuchsia-800 text-sm mb-2 math-text-flow">시스템 자동 계산 참고값 <span class="inline-term">(\(\Delta\text{pH}/\Delta V\) 1차 미분)</span></h3>
+                        <h3 class="font-bold text-fuchsia-800 text-base mb-2 math-text-flow">시스템 자동 계산 참고값 <span class="inline-term">(\(\Delta\text{pH}/\Delta V\) 1차 미분)</span></h3>
                         <div class="h-[160px] mb-3 bg-white rounded border border-fuchsia-100 p-1"><canvas id="a-derivative-chart"></canvas></div>
                         <table class="w-full text-sm text-center bg-white border border-fuchsia-200 border-collapse">
                             <thead class="bg-fuchsia-100 text-fuchsia-800 text-xs"><tr><th class="p-2 border">항목</th><th class="p-2 border">내 초안</th><th class="p-2 border">시스템 참고값</th><th class="p-2 border">차이 (오차율)</th></tr></thead>
@@ -862,12 +879,12 @@
             <div id="analysis-lock-ai" class="absolute inset-0 bg-white z-30 flex flex-col items-center justify-center rounded-xl border border-slate-200 text-center p-6 transition-opacity">
                 <svg class="w-10 h-10 text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                 <h3 class="font-bold text-slate-700">위쪽의 초안을 모두 작성한 후 [초안 작성 완료] 버튼을 눌러주세요.</h3>
-                <p class="text-xs text-slate-500 mt-2">초안 제출 후 AI 교차 검증창이 활성화됩니다.</p>
+                <p class="text-xs text-slate-500 mt-2">초안 제출 후 AI 활용 검증창이 활성화됩니다.</p>
             </div>
 
             <div id="analysis-content-ai" class="opacity-50 pointer-events-none transition-opacity duration-300">
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                    <h3 class="font-bold text-brand-navy mb-2">AI 대화 검증 기록</h3>
+                    <h3 class="font-bold text-brand-navy mb-2">AI 활용 검증</h3>
                     <div class="bg-amber-50 p-3 text-xs text-amber-900 mb-4 border border-amber-200 rounded leading-relaxed shadow-inner">
                         <p class="font-bold mb-1 flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg> 프롬프트 작성 주의사항</p>
                         개인정보 보호를 위해 대화에는 닉네임만 사용하고, 이름 · 학번 · 학교명은 입력하지 마세요. 정답을 일방적으로 요구하지 말고 자신의 판단을 먼저 제시한 뒤 검증을 요청하세요.
@@ -875,19 +892,19 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-4 min-w-0">
-                            <div class="bg-slate-50 p-3 rounded border border-slate-200 text-xs text-slate-700 space-y-1.5">
-                                <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 mt-0.5 accent-brand-teal flex-shrink-0"> 나의 데이터와 초안(당량점 판단, 계산)을 AI에게 먼저 제시했다.</label>
-                                <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 mt-0.5 accent-brand-teal flex-shrink-0"> 오류 검토, 반례, 근거를 확인하는 질문을 했다.</label>
-                            </div>
-
                             <div class="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm">
                                 <div class="bg-brand-navy text-white px-3 py-2 flex items-center gap-2">
                                     <svg class="w-4 h-4 text-brand-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                                    <span class="text-xs font-bold">AI 화학 튜터 (중화적정 질의응답)</span>
+                                    <span class="text-xs font-bold">AI 화학 튜터</span>
+                                    <span class="ml-auto text-[10px] font-mono text-brand-teal border border-brand-teal/50 rounded px-1.5 py-0.5">Gemini 3.6 Flash</span>
+                                </div>
+                                <div class="bg-fuchsia-50 border-b border-fuchsia-100 p-2">
+                                    <button type="button" onclick="requestAiDraftReview()" class="w-full bg-brand-pink hover:bg-pink-600 text-white text-xs font-bold py-2 px-3 rounded transition-colors shadow-sm">📋 내 초안(당량점 판단·농도 계산·오차 분석) 자동 검토 요청</button>
+                                    <p class="text-[11px] text-slate-500 mt-1.5 text-center">또는 아래 입력창에 직접 검토를 요청하는 문구를 작성해서 보내도 됩니다.</p>
                                 </div>
                                 <div id="ai-chat-messages" class="h-64 overflow-y-auto p-3 space-y-3 bg-slate-50 text-xs"></div>
                                 <form onsubmit="handleAiTutorSubmit(event)" class="flex items-center gap-2 p-2 border-t border-slate-200 bg-white">
-                                    <input type="text" id="ai-chat-input" placeholder="닉네임 등 개인정보 없이 질문을 입력하세요..." class="flex-grow p-2 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-brand-teal" autocomplete="off">
+                                    <input type="text" id="ai-chat-input" placeholder="예: 제 오차 분석이 타당한지 검토해주세요" class="flex-grow p-2 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-brand-teal" autocomplete="off">
                                     <button type="submit" id="ai-chat-send-btn" class="bg-brand-teal hover:bg-teal-600 text-white px-3 py-2 rounded text-xs font-bold transition-colors shrink-0">전송</button>
                                 </form>
                             </div>
@@ -909,7 +926,12 @@
                                         <thead><tr class="bg-slate-200 text-slate-700"><th class="p-2 border">AI 답변 내용</th><th class="p-2 border w-28">선택</th><th class="p-2 border">판단 근거</th><th class="p-2 border w-10 text-center">삭제</th></tr></thead>
                                         <tbody id="ai-proposal-tbody">
                                             <tr class="bg-white">
-                                                <td class="p-1 border"><textarea class="w-full p-1 resize-y text-xs border-none outline-none focus:ring-1 focus:ring-brand-teal rounded" rows="2" placeholder="AI 지적 사항"></textarea></td>
+                                                <td class="p-1 border align-top">
+                                                    <select class="ai-proposal-picker w-full p-1 text-[11px] border border-slate-200 rounded mb-1 bg-white" onchange="applyAiProposalPick(this)">
+                                                        <option value="">▾ AI 답변에서 선택(선택 시 자동 입력)</option>
+                                                    </select>
+                                                    <textarea class="w-full p-1 resize-y text-xs border-none outline-none focus:ring-1 focus:ring-brand-teal rounded" rows="2" placeholder="또는 여기에 직접 입력하세요"></textarea>
+                                                </td>
                                                 <td class="p-1 border"><select class="w-full p-1 text-xs border-none outline-none focus:ring-1 focus:ring-brand-teal rounded bg-slate-50"><option>수용</option><option>일부 수용</option><option>수용하지 않음</option></select></td>
                                                 <td class="p-1 border"><textarea class="w-full p-1 resize-y text-xs border-none outline-none focus:ring-1 focus:ring-brand-teal rounded" rows="2" placeholder="이유 입력"></textarea></td>
                                                 <td class="p-1 border text-center"><button onclick="this.closest('tr').remove()" class="text-red-500 font-bold">X</button></td>
@@ -1041,7 +1063,7 @@
             <div class="pdf-section mb-8 print-break-inside-avoid text-sm">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="w-7 h-7 rounded-full bg-brand-navy text-white text-xs font-bold flex items-center justify-center shrink-0 print:bg-slate-800">3</span>
-                    <h3 class="font-bold text-lg text-brand-navy">AI 대화 검증 기록</h3>
+                    <h3 class="font-bold text-lg text-brand-navy">AI 활용 검증 기록</h3>
                 </div>
                 <div class="bg-slate-50 p-3 rounded border border-slate-200 print:bg-white mb-3">
                     <strong class="flex items-center gap-1.5 mb-2 text-brand-navy border-b pb-1">💬 AI 튜터 대화 전문</strong>
@@ -1132,8 +1154,8 @@
     </div>
 </footer>
 
-<div id="alert-modal" class="hidden fixed inset-0 z-[200] flex items-center justify-center modal-overlay">
-    <div class="bg-white p-6 rounded-xl w-80 text-center shadow-2xl border border-slate-200">
+<div id="alert-modal" class="hidden fixed inset-0 z-[200] flex items-center justify-center modal-overlay p-4">
+    <div class="bg-white p-6 rounded-xl w-full max-w-sm sm:max-w-xl md:max-w-2xl max-h-[85vh] overflow-y-auto text-left shadow-2xl border border-slate-200">
         <p id="alert-text" class="mb-5 text-sm font-bold text-slate-700 whitespace-pre-wrap leading-relaxed"></p>
         <button onclick="document.getElementById('alert-modal').classList.add('hidden')" class="w-full bg-brand-navy text-white py-2 rounded font-bold hover:bg-slate-800 transition-colors shadow">확인</button>
     </div>
@@ -1348,6 +1370,7 @@
         },
         analysis: { myEqVol: null, myEqReason: "", myCalcDil: null, myCalcOrig: null, errorAnalysis: "", sysEqVol: null, sysEqConc: null, isLocked: false, aiConversation: [] },
         quiz: { score: null, total: 10 },
+        generalChat: { conversation: [] },
         report: { calculationImage: null }
     };
 
@@ -1538,6 +1561,7 @@
         checkApiServerStatus();
         updateCalculationImageUI();
         renderAiChatFromState();
+        renderGeneralChatFromState();
 
         const pdfButton = document.getElementById("downloadPdfBtn");
         if (pdfButton) {
@@ -2135,7 +2159,7 @@
             const hint = document.getElementById('deriv-demo-hint');
             if (hint) {
                 if (Math.abs(idx - maxIdx) <= 2) {
-                    hint.innerHTML = `<span class="text-brand-pink font-bold">⬆ 지금 기울기가 최대인 지점 근처예요! 이 부피(약 ${veqEstimate.toFixed(1)}mL)가 이 곡선의 당량점으로 추정됩니다.</span>`;
+                    hint.innerHTML = `<span class="text-brand-pink font-bold">⬆ 지금 기울기가 최대인 지점 근처예요!<br>이 부피(약 ${veqEstimate.toFixed(1)}mL)가 이 곡선의 당량점으로 추정됩니다.</span>`;
                 } else {
                     hint.innerText = '슬라이더를 움직여 기울기(ΔpH/ΔV)가 가장 커지는 지점을 찾아보세요.';
                 }
@@ -2701,8 +2725,29 @@
 
     function addAiProposalRow() {
         const tr = document.createElement('tr'); tr.className="bg-white";
-        tr.innerHTML = `<td class="p-1 border"><textarea class="w-full p-1 resize-y text-xs border-none outline-none focus:ring-1 focus:ring-brand-teal" rows="2" placeholder="AI 지적 사항"></textarea></td><td class="p-1 border w-28"><select class="w-full p-1 text-xs border-none outline-none bg-slate-50 focus:ring-1 focus:ring-brand-teal"><option>수용</option><option>일부 수용</option><option>수용하지 않음</option></select></td><td class="p-1 border"><textarea class="w-full p-1 resize-y text-xs border-none outline-none focus:ring-1 focus:ring-brand-teal" rows="2" placeholder="이유 입력"></textarea></td><td class="p-1 border text-center"><button onclick="this.closest('tr').remove()" class="text-red-500 font-bold">X</button></td>`;
+        tr.innerHTML = `<td class="p-1 border align-top"><select class="ai-proposal-picker w-full p-1 text-[11px] border border-slate-200 rounded mb-1 bg-white" onchange="applyAiProposalPick(this)"><option value="">▾ AI 답변에서 선택(선택 시 자동 입력)</option></select><textarea class="w-full p-1 resize-y text-xs border-none outline-none focus:ring-1 focus:ring-brand-teal" rows="2" placeholder="또는 여기에 직접 입력하세요"></textarea></td><td class="p-1 border w-28"><select class="w-full p-1 text-xs border-none outline-none bg-slate-50 focus:ring-1 focus:ring-brand-teal"><option>수용</option><option>일부 수용</option><option>수용하지 않음</option></select></td><td class="p-1 border"><textarea class="w-full p-1 resize-y text-xs border-none outline-none focus:ring-1 focus:ring-brand-teal" rows="2" placeholder="이유 입력"></textarea></td><td class="p-1 border text-center"><button onclick="this.closest('tr').remove()" class="text-red-500 font-bold">X</button></td>`;
         document.getElementById('ai-proposal-tbody').appendChild(tr);
+        refreshAiProposalSelects();
+    }
+
+    // AI 대화 기록이 갱신될 때마다 'AI 제안 판단표'의 선택 드롭다운 옵션을 새로 채움
+    function refreshAiProposalSelects() {
+        const aiMessages = getReviewConversation().filter(m => m.role === 'model');
+        const optionsHtml = '<option value="">▾ AI 답변에서 선택(선택 시 자동 입력)</option>' +
+            aiMessages.map((m, i) => {
+                const full = String(m.text || '').replace(/"/g, '&quot;');
+                const preview = escapeHtmlForChat(m.text).slice(0, 40) + (m.text.length > 40 ? '...' : '');
+                return `<option value="${escapeHtmlForChat(full)}">${i + 1}번째 AI 답변: ${preview}</option>`;
+            }).join('');
+        document.querySelectorAll('.ai-proposal-picker').forEach(sel => { sel.innerHTML = optionsHtml; });
+    }
+
+    // 드롭다운에서 AI 답변을 선택하면 같은 칸의 텍스트영역에 자동으로 채워넣음(직접 입력도 계속 가능)
+    function applyAiProposalPick(selectEl) {
+        if (!selectEl.value) return;
+        const textarea = selectEl.parentElement.querySelector('textarea');
+        if (textarea) textarea.value = selectEl.value;
+        selectEl.selectedIndex = 0;
     }
 
 
@@ -2715,17 +2760,19 @@
             .replace(/>/g, "&gt;");
     }
 
-    function appendAiChatBubble(role, text) {
-        const container = document.getElementById('ai-chat-messages');
+    function appendChatBubble(containerId, role, text) {
+        const container = document.getElementById(containerId);
         if (!container) return;
         const div = document.createElement('div');
         if (role === 'user') {
             div.className = 'ml-auto max-w-[85%] bg-brand-navy text-white p-2 rounded-lg rounded-br-none';
             div.innerHTML = `<span class="whitespace-pre-wrap">${escapeHtmlForChat(text)}</span>`;
         } else if (role === 'loading') {
-            div.id = 'ai-chat-loading-bubble';
-            div.className = 'max-w-[85%] bg-white border border-slate-200 p-2 rounded-lg rounded-bl-none text-slate-400';
+            div.className = 'chat-loading-bubble max-w-[85%] bg-white border border-slate-200 p-2 rounded-lg rounded-bl-none text-slate-400';
             div.innerText = 'AI 튜터가 답변을 작성 중...';
+        } else if (role === 'offline') {
+            div.className = 'max-w-[85%] bg-amber-50 border border-amber-200 p-2 rounded-lg rounded-bl-none text-amber-900';
+            div.innerHTML = `<span class="font-bold block mb-1 text-[11px]">⚠️ 오프라인 응답 (기록에 남지 않습니다)</span><span class="whitespace-pre-wrap">${escapeHtmlForChat(text)}</span>`;
         } else {
             div.className = 'max-w-[85%] bg-white border border-slate-200 p-2 rounded-lg rounded-bl-none text-slate-700';
             div.innerHTML = `<span class="whitespace-pre-wrap">${escapeHtmlForChat(text)}</span>`;
@@ -2735,53 +2782,85 @@
         return div;
     }
 
-    // 새로고침 후에도 기존 대화가 보이도록 저장된 기록으로 채팅창을 다시 그림
-    function renderAiChatFromState() {
-        const container = document.getElementById('ai-chat-messages');
+    function renderChatFromState(containerId, conversation, emptyMsgHtml) {
+        const container = document.getElementById(containerId);
         if (!container) return;
         container.innerHTML = '';
-        const conv = (appState.analysis && appState.analysis.aiConversation) || [];
-        if (conv.length === 0) {
-            container.innerHTML = '<p class="text-slate-400 text-center mt-4">AI 튜터에게 중화적정 관련 질문을 해보세요. (예: 당량점과 종말점의 차이가 뭐야?)</p>';
+        if (!conversation || conversation.length === 0) {
+            container.innerHTML = `<p class="text-slate-400 text-center mt-4">${emptyMsgHtml}</p>`;
             return;
         }
-        conv.forEach(m => appendAiChatBubble(m.role === 'user' ? 'user' : 'model', m.text));
+        conversation.forEach(m => appendChatBubble(containerId, m.role === 'user' ? 'user' : 'model', m.text));
         renderMathInElement(container);
+    }
+
+    function getReviewConversation() {
+        if (!appState.analysis.aiConversation) appState.analysis.aiConversation = [];
+        return appState.analysis.aiConversation;
+    }
+    function getGeneralConversation() {
+        if (!appState.generalChat) appState.generalChat = { conversation: [] };
+        if (!appState.generalChat.conversation) appState.generalChat.conversation = [];
+        return appState.generalChat.conversation;
+    }
+
+    // 새로고침 후에도 기존 대화가 보이도록 저장된 기록으로 두 채팅창을 다시 그림
+    function renderAiChatFromState() {
+        renderChatFromState('ai-chat-messages', getReviewConversation(),
+            '위 "내 초안 자동 검토 요청" 버튼을 누르면 초안이 자동으로 전송되어 검토받을 수 있고, 아래 입력창에 직접 검토를 요청하는 문구를 작성해 보내셔도 됩니다.');
+        refreshAiProposalSelects();
+    }
+    function renderGeneralChatFromState() {
+        renderChatFromState('general-chat-messages', getGeneralConversation(),
+            'AI 튜터에게 중화적정 관련 질문을 해보세요. (예: 당량점과 종말점의 차이가 뭐야?)');
     }
 
     function handleAiTutorSubmit(e) {
         e.preventDefault();
-        sendAiTutorMessage();
+        sendChatMessageCore({ inputId: 'ai-chat-input', sendBtnId: 'ai-chat-send-btn', containerId: 'ai-chat-messages', getConversation: getReviewConversation, mode: 'review' });
+    }
+    function handleGeneralChatSubmit(e) {
+        e.preventDefault();
+        sendChatMessageCore({ inputId: 'general-chat-input', sendBtnId: 'general-chat-send-btn', containerId: 'general-chat-messages', getConversation: getGeneralConversation, mode: 'general' });
     }
 
-    async function sendAiTutorMessage() {
-        const input = document.getElementById('ai-chat-input');
-        const sendBtn = document.getElementById('ai-chat-send-btn');
+    // 추천 질문(퀵 프롬프트) 클릭 시 자동으로 질문을 채워 전송
+    function sendGeneralQuickPrompt(promptText) {
+        const input = document.getElementById('general-chat-input');
+        if (!input) return;
+        input.value = promptText;
+        sendChatMessageCore({ inputId: 'general-chat-input', sendBtnId: 'general-chat-send-btn', containerId: 'general-chat-messages', getConversation: getGeneralConversation, mode: 'general' });
+    }
+
+    // 두 챗봇(1차시 개념 Q&A / 3차시 초안 검토)이 공유하는 전송 로직.
+    // AI가 응답하지 못해 오프라인 대체 문구를 보여줄 때는 화면에는 표시하되, 대화 기록(appState)에는 남기지 않음.
+    async function sendChatMessageCore(opts) {
+        const input = document.getElementById(opts.inputId);
+        const sendBtn = document.getElementById(opts.sendBtnId);
         const userMsg = input ? input.value.trim() : '';
         if (!userMsg) return;
-
-        if (!appState.analysis.aiConversation) appState.analysis.aiConversation = [];
 
         input.value = '';
         input.disabled = true;
         if (sendBtn) sendBtn.disabled = true;
 
-        const emptyState = document.querySelector('#ai-chat-messages p.text-slate-400');
+        const container = document.getElementById(opts.containerId);
+        const emptyState = container ? container.querySelector('p.text-slate-400') : null;
         if (emptyState) emptyState.remove();
 
-        appendAiChatBubble('user', userMsg);
-        appState.analysis.aiConversation.push({ role: 'user', text: userMsg, ts: new Date().toLocaleString() });
-        saveState();
+        appendChatBubble(opts.containerId, 'user', userMsg);
+        appendChatBubble(opts.containerId, 'loading', '');
 
-        appendAiChatBubble('loading', '');
+        const conversation = opts.getConversation();
+        const history = conversation.map(m => ({ role: m.role, text: m.text }));
 
         let botReply = null;
+        let isOffline = false;
         try {
             if (cloudReady()) {
-                const history = appState.analysis.aiConversation
-                    .slice(0, -1) // 방금 보낸 사용자 메시지 제외(이미 userMessage로 별도 전달)
-                    .map(m => ({ role: m.role, text: m.text }));
-                const result = await cloudCall({ action: 'chatTutor', history: history, userMessage: userMsg });
+                const payload = { action: 'chatTutor', history: history, userMessage: userMsg, mode: opts.mode };
+                if (opts.mode === 'review') payload.studentDraft = buildStudentDraftForAiReview();
+                const result = await cloudCall(payload);
                 if (result && result.ok && result.reply) {
                     botReply = result.reply;
                 } else {
@@ -2794,15 +2873,20 @@
             console.error('AI 튜터 호출 네트워크 오류:', err);
         }
 
-        if (!botReply) botReply = getAiTutorOfflineFallback(userMsg);
+        if (!botReply) { botReply = getAiTutorOfflineFallback(userMsg); isOffline = true; }
 
-        const loadingBubble = document.getElementById('ai-chat-loading-bubble');
+        const loadingBubble = container ? container.querySelector('.chat-loading-bubble') : null;
         if (loadingBubble) loadingBubble.remove();
-        appendAiChatBubble('model', botReply);
-        renderMathInElement(document.getElementById('ai-chat-messages'));
 
-        appState.analysis.aiConversation.push({ role: 'model', text: botReply, ts: new Date().toLocaleString() });
-        saveState();
+        appendChatBubble(opts.containerId, isOffline ? 'offline' : 'model', botReply);
+        if (container) renderMathInElement(container);
+
+        if (!isOffline) {
+            conversation.push({ role: 'user', text: userMsg, ts: new Date().toLocaleString() });
+            conversation.push({ role: 'model', text: botReply, ts: new Date().toLocaleString() });
+            saveState();
+            if (opts.mode === 'review') refreshAiProposalSelects();
+        }
 
         input.disabled = false;
         if (sendBtn) sendBtn.disabled = false;
@@ -2820,6 +2904,32 @@
             return "중화적정의 핵심 공식은 n × M × V = n' × M' × V' 입니다. n은 가수, M은 몰농도, V는 부피를 의미하며, 이 관계식으로 농도를 모르는 용액의 농도를 구할 수 있습니다.";
         }
         return "(오프라인 응답) 지금 클라우드 연결이 원활하지 않아 기본 안내만 드립니다. 당량점, 지시약 선택, 계산 공식 중 어떤 부분이 궁금하신가요? 선생님께도 함께 질문해보세요.";
+    }
+
+    // 왼쪽 '나의 초안' 입력값을 모아 AI 검토 요청 시 함께 전달할 컨텍스트 구성
+    function buildStudentDraftForAiReview() {
+        const getVal = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+        return {
+            eqVol: getVal('a-eq-vol'),
+            eqReason: getVal('a-eq-reason'),
+            dilutedConc: getVal('a-calc-diluted'),
+            originalConc: getVal('a-calc-original'),
+            errorAnalysis: getVal('a-error-analysis')
+        };
+    }
+
+    // "내 초안 자동 검토 요청" 버튼: 초안 값을 메시지에 그대로 담아 자동으로 전송함
+    // (직접 검토 요청 문구를 쓰고 싶으면 입력창에 자유롭게 작성해서 보내도 됨 - 두 방식 병행 지원)
+    function requestAiDraftReview() {
+        const input = document.getElementById('ai-chat-input');
+        if (!input) return;
+        const d = buildStudentDraftForAiReview();
+        const lines = ['제 초안을 검토해주세요.'];
+        lines.push(`- 당량점 판단: ${d.eqVol ? d.eqVol + 'mL' : '(미입력)'} / 근거: ${d.eqReason || '(미입력)'}`);
+        lines.push(`- 농도 계산: 희석액 ${d.dilutedConc || '?'}M → 원액 ${d.originalConc || '?'}M`);
+        lines.push(`- 오차 원인 분석: ${d.errorAnalysis || '(미입력)'}`);
+        input.value = lines.join('\n');
+        sendChatMessageCore({ inputId: 'ai-chat-input', sendBtnId: 'ai-chat-send-btn', containerId: 'ai-chat-messages', getConversation: getReviewConversation, mode: 'review' });
     }
     // ================================================================================
 
